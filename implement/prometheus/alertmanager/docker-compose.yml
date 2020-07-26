@@ -12,11 +12,6 @@ services:
     deploy:
       restart_policy:
         condition: always
-    # logging:
-    #   driver: "syslog"
-    #   options:  
-    #     syslog-address: "tcp://127.0.0.1:1514"
-    #     tag: "grafana"
 networks:
   alertmanager:
     external: false
