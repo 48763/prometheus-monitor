@@ -1,0 +1,6 @@
+- targets:
+  - test-service-01.gcp.yukifans.com:9400
+  labels:
+    ip_address_1: 10.0.0.1
+    app: docker
+

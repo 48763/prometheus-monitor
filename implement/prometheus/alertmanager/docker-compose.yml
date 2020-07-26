@@ -1,0 +1,22 @@
+version: '3'
+services:
+  alertmanager:
+    image: prom/alertmanager
+    volumes:
+      - ./config/alertmanager.yml:/etc/alertmanager/alertmanager.yml:rw
+      - /data/monitor/alertmanager:/alertmanager:rw
+    ports:
+      - 9093:9093
+    networks:
+      - alertmanager
+    deploy:
+      restart_policy:
+        condition: always
+    # logging:
+    #   driver: "syslog"
+    #   options:  
+    #     syslog-address: "tcp://127.0.0.1:1514"
+    #     tag: "grafana"
+networks:
+  alertmanager:
+    external: false

@@ -1,0 +1,17 @@
+version: '3'
+services:
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - ./grafana.db:/var/lib/grafana/grafana.db:rw
+    ports:
+      - 3000:3000
+    networks:
+      - grafana
+    deploy:
+      restart_policy:
+        condition: always
+    privileged: true
+networks:
+  grafana:
+    external: false

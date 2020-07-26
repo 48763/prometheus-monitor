@@ -1,0 +1,25 @@
+- targets:
+  - test-service-01.gcp.yukifans.com:9100
+  labels:
+    ip_address_1: 10.0.0.1
+    ip_address_2: 10.20.0.1
+    app: default
+    node_status: on
+    gcp_status: RUNNING
+
+- targets:
+  - test-service-02.gcp.yukifans.com:9100
+  labels:
+    ip_address_1: 10.0.0.2
+    app: default
+    node_status: N/A
+    gcp_status: RUNNING
+
+- targets:
+  - test-service-03.gcp.yukifans.com:9100
+  labels:
+    ip_address_1: 10.0.0.3
+    app: default
+    node_status: off
+    gcp_status: TERMINATED
+
