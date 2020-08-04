@@ -1,7 +1,7 @@
 # Server
 
 ## 目錄
-- [啟用服務](./#啟用服務)
+- [啟用服務](#啟用服務)
 - [數據模型](./data-model.md#數據模型)
 - [指標類型](./metric-types.md#指標metrics類型)
     - [收集 Docker 指標](./collect-docker-metrics.md)
