@@ -35,7 +35,7 @@ $ tree
 
 ![](img/img-01.png)
 
-Prometheus 服務器，可以從 *Pushgateway* 或目標的 *exporter* 拉取（pull）測量指標；而對於目標本身，只需透過 *exporter* 將指標暴露給外部服務器，或是將指標推送（push）到 *Pushgateway*，使其收集，並讓服務器拉取。
+Prometheus 服務器，可以從 *Pushgateway* 或目標的 *exporter* 拉取（pull）測量指標；而對於目標本身，只需透過 *exporter* 將指標曝露給外部服務器，或是將指標推送（push）到 *Pushgateway*，使其收集，並讓服務器拉取。
 
 服務器會將收集的測量指標與時間序列，透過 *預寫式日誌（WAL, write-ahead-log）* 的方式，先保存在記憶體當中，而不會立即寫入到資料庫（levelDB）。預寫式日誌以 128MB 為一個分段，儲存在目錄 `wal` 下。預寫的檔案會以兩個小時一次，壓縮寫至到資料庫（TSDB）內。
 
