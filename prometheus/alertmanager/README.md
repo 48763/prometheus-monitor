@@ -5,7 +5,7 @@
 
 ## Table of contents
 - [Installation](./#installation)
-- [Config](./config)
+- [Config](/implement/prometheus/alertmanager/)
 
 ## Installation 
 ```bash

@@ -5,7 +5,7 @@
 - [數據模型](./data-model.md#數據模型)
 - [指標類型](./metric-types.md#指標metrics類型)
     - [收集 Docker 指標](./collect-docker-metrics.md)
-- [配置檔](./config)
+- [配置檔](/implement/prometheus/server/)
 
 ## 啟用服務
 
