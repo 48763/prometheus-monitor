@@ -6,12 +6,12 @@ services:
       - ./grafana.db:/var/lib/grafana/grafana.db:rw
     ports:
       - 3000:3000
-    networks:
+    monitor:
       - grafana
     deploy:
       restart_policy:
         condition: always
     privileged: true
 networks:
-  grafana:
-    external: false
+  monitor:
+    external: true

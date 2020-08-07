@@ -2,6 +2,12 @@ version: '3'
 services:
   prometheus:
     image: prom/prometheus
+    command: 
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=1d
+      - --web.console.libraries=/usr/share/prometheus/console_libraries
+      - --web.console.templates=/usr/share/prometheus/consoles
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:rw
       - ./config/:/etc/prometheus/config/:rw
@@ -9,16 +15,10 @@ services:
     ports:
       - 9090:9090
     networks:
-      - prometheus
+      - monitor
     deploy:
       restart_policy:
         condition: always
-    command: 
-      - --config.file=/etc/prometheus/prometheus.yml
-      - --storage.tsdb.path=/prometheus
-      - --storage.tsdb.retention.time=1d
-      - --web.console.libraries=/usr/share/prometheus/console_libraries
-      - --web.console.templates=/usr/share/prometheus/consoles
 networks:
-  prometheus:
-    external: false
+  monitor:
+    external: true

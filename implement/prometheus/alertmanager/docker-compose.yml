@@ -2,16 +2,19 @@ version: '3'
 services:
   alertmanager:
     image: prom/alertmanager
+    command: 
+      - --config.file=/etc/alertmanager/alertmanager.yml
+      - --web.external-url=https://monitor.silkrode.com.tw:9093
     volumes:
       - ./config/alertmanager.yml:/etc/alertmanager/alertmanager.yml:rw
       - /data/monitor/alertmanager:/alertmanager:rw
     ports:
       - 9093:9093
     networks:
-      - alertmanager
+      - monitor
     deploy:
       restart_policy:
         condition: always
 networks:
-  alertmanager:
-    external: false
+  monitor:
+    external: true

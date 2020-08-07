@@ -17,4 +17,4 @@ receivers:
     # The channel or user to send notifications to.
     channel: '#alerting'
     username: 'Grafana'
-    text: "<!channel> \nsummary: {{ .CommonAnnotations.summary }}\ndescription: {{ .CommonAnnotations.description }}"
+    text: "<!channel> {{ range.Alerts }}\nsummary: {{ .Annotations.summary }}\ndescription: {{ .Annotations.description }}\n{{ end }}"
