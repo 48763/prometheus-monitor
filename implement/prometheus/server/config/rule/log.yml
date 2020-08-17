@@ -1,0 +1,19 @@
+groups:
+  - name: Log
+    rules:
+    - alert: ContainerExited
+      expr: engine_daemon_container_states_containers{state="running"} / ignoring(state) sum without(state) (engine_daemon_container_states_containers{app="docker"}) < 1
+      for: 1m
+      labels:
+        severity: container
+      annotations:
+        summary: "Container {{ $labels.instance }} exited"
+        description: "{{ $labels.instance }} of job {{ $labels.job }} has been container exited for more than 1 minutes."
+    - alert: ESNotHealth
+      expr: sum by (cluster,job)(es_cluster_status) > 1
+      for: 1m
+      labels:
+        severity: elasticsearch
+      annotations:
+        summary: "Elasticsearch cluster {{ $labels.cluster }} not health"
+        description: "{{ $labels.cluster }} of job {{ $labels.job }} has been unhealthy for more than 1 minutes."

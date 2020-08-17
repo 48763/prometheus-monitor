@@ -1,0 +1,35 @@
+groups:
+  - name: GCP
+    rules:
+    - alert: InstanceDown
+      expr: up{gcp_status="RUNNING",node_status="on"} == 0
+      for: 1m
+      labels:
+        severity: instance
+      annotations:
+        summary: "Instance {{ $labels.instance }} down"
+        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minutes."
+    - alert: CPULoadHigh
+      expr: (1 - avg by (instance,job) (irate(node_cpu_seconds_total{gcp_status="RUNNING",mode="idle"}[1m]))) > 0.8
+      for: 5m
+      labels:
+        severity: CPU
+      annotations:
+        summary: "Instance {{ $labels.instance }} CPU load too high"
+        description: "{{ $labels.instance }} of job {{ $labels.job }} has been CPU load too high for more than 5 minutes."
+    - alert: MemoryInsufficient
+      expr: (1 - node_memory_MemAvailable_bytes{gcp_status="RUNNING"} / node_memory_MemTotal_bytes) > 0.8
+      for: 5m
+      labels:
+        severity: memory
+      annotations:
+        summary: "Instance {{ $labels.instance }} memory not enough"
+        description: "{{ $labels.instance }} of job {{ $labels.job }} has been memory not enough for more than 5 minutes."
+    - alert: DiskFull
+      expr: (1 - node_filesystem_avail_bytes{gcp_status="RUNNING", fstype=~"xfs"} / node_filesystem_size_bytes) > 0.8
+      for: 5m
+      labels:
+        severity: disk
+      annotations:
+        summary: "Instance {{ $labels.instance }} disk full"
+        description: "{{ $labels.instance }} of job {{ $labels.job }} has been disk full for more than 5 minutes."

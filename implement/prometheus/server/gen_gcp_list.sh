@@ -12,11 +12,20 @@ set_job() {
     
     echo "
   - job_name: $PROJ-$1
+    scrape_interval: $(get_minter)
     metrics_path: $(get_mpath)
     file_sd_configs:
     - refresh_interval: 30s
       files:
       - \"config/gcp/$PROJ/$1.yml\"" >> $CONFIG
+}
+
+get_minter () {
+    if [ ! $APP = "elasticsearch" ]; then
+        echo "10s"
+    else
+        echo "150s"
+    fi
 }
 
 get_mpath () {
