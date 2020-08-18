@@ -12,8 +12,6 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:rw
       - ./config/:/etc/prometheus/config/:rw
       - /data/monitor/prometheus:/prometheus
-    ports:
-      - 9090:9090
     networks:
       - monitor
     deploy:

@@ -4,8 +4,6 @@ services:
     image: grafana/grafana
     volumes:
       - ./grafana.db:/var/lib/grafana/grafana.db:rw
-    ports:
-      - 3000:3000
     monitor:
       - grafana
     deploy:
