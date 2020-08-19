@@ -126,7 +126,7 @@ main() {
             dpkg -s jq > /dev/null 2>&1
             if [ 0 -ne $? ]; then
                 echo "Install..."
-                $sh_c "apt-get install -qq -y jq"
+                $sh_c "apt-get install -qq jq > /dev/null"
             fi
             echo "Depends done."
 
@@ -146,7 +146,7 @@ main() {
                 echo "Install..."
 
                 $sh_c "apt-get update -qq"
-                $sh_c "apt-get install -qqy prometheus-node-exporter"
+                $sh_c "apt-get install -qq prometheus-node-exporter > /dev/null"
             fi
             
             $sh_c "systemctl start prometheus-node-exporter"
