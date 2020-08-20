@@ -7,7 +7,7 @@ services:
       - --web.external-url=https://monitor.silkrode.com.tw:9093
     volumes:
       - ./config/alertmanager.yml:/etc/alertmanager/alertmanager.yml:rw
-      - /data/monitor/alertmanager:/alertmanager:rws
+      - /data/monitor/alertmanager:/alertmanager:rw
     networks:
       - monitor
     deploy:

@@ -4,7 +4,7 @@ services:
     image: grafana/grafana
     volumes:
       - ./grafana.db:/var/lib/grafana/grafana.db:rw
-    monitor:
+    networks:
       - grafana
     deploy:
       restart_policy:
