@@ -1,8 +1,15 @@
 - targets:
+  - '192.168.0.1:9091'
+  labels:
+    instance: 'monitor.yukifans.com:9091'
+    app: 'pushgateway'
+- targets:
   - '192.168.0.1:9100'
   labels:
     instance: 'monitor.yukifans.com:9100'
+    app: 'exporter'
 - targets:
   - '192.168.0.1:9400'
   labels:
     instance: 'monitor.yukifans.com:9400'
+    app: 'docker-exporter'

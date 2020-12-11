@@ -1,0 +1,14 @@
+version: '3'
+services:
+  pushgateway:
+    image: prom/pushgateway
+    networks:
+      - monitor
+    expose:
+      - "9091:9091"
+    deploy:
+      restart_policy:
+        condition: always
+networks:
+  monitor:
+    external: true
