@@ -19,7 +19,7 @@ $ docker run -d --name grafana -p 3000:3000 grafana/grafana
 $ docker run --name grafana\
     -p 3000:3000 \
     --name=grafana \
-    -e "GF_SERVER_ROOT_URL=http://monitor.yukifans.com" \
+    -e "GF_SERVER_DOMAIN=http://monitor.yukifans.com" \
     -e "GF_SECURITY_ADMIN_PASSWORD=P@s2W0rD" \
     -d grafana/grafana
 ```
@@ -47,3 +47,4 @@ $ grafana-cli --config "/etc/configuration/" admin reset-admin-password mynewpas
 ## 參考 
 
 - [grafana-cli-command-syntax](https://grafana.com/docs/grafana/latest/administration/cli/#grafana-cli-command-syntax)
+- [Configuration](https://grafana.com/docs/grafana/latest/administration/configuration/)
