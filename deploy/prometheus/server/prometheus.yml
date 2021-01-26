@@ -35,6 +35,15 @@ scrape_configs:
       files:
       - "config/main.yml"
 
+  - job_name: pushgateway
+
+    scrape_interval: 2s
+    metrics_path: /metrics
+    file_sd_configs:
+    - refresh_interval: 30s
+      files:
+      - "config/pushgateway.yml"
+
 # Script auto generate GCP config.
 
   - job_name: odin-default

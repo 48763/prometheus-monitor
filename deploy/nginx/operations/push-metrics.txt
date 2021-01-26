@@ -15,5 +15,6 @@ do
 
     echo -e ${metrics} | curl --data-binary @metrics http://192.168.0.1:9091/metrics/job/$(hostname)/ip/172.16.0.1
 
-    sleep 5
+    sleep 2
+
 done

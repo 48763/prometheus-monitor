@@ -4,8 +4,6 @@ Prometheus 是一個開源系統監控和警示的工具包。
 
 Prometheus 在 2016 加入 Cloud Native Computing Foundation，成為其第二個託管的專案。
 
-## 
-
 ## 目錄
 
 - [架構](#架構)
@@ -18,14 +16,15 @@ Prometheus 在 2016 加入 Cloud Native Computing Foundation，成為其第二�
 
 ## 前言
 
-Prometheus 相關的服務啟用與配置，預設路徑都是從 `/implement` 開始，在對應的服務目錄：
+Prometheus 相關的服務啟用與配置，路徑都與服務名稱相對應：
 
 ```bash
 $ git clone https://github.com/48763/prometheus-monitor.git
-$ cd prometheus-monitor/implement/
+$ cd prometheus-monitor/deploy
 $ tree
 .
 ├── grafana
+├── nginx
 └── prometheus
     ├── alertmanager
     └── server
