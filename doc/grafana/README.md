@@ -1,19 +1,27 @@
 # Grafana
 
-## Install
+## 運行
+
+### 本機
 
 ```
 wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_5.2.4_amd64.deb 
 sudo dpkg -i grafana_5.2.4_amd64.deb 
 ```
 
-### Using Docker
+### Docker
 
 ```
 $ docker run -d --name grafana -p 3000:3000 grafana/grafana
 ```
 
-#### Setting configuration
+## 配置環境變數
+
+```
+GF_<SectionName>_<KeyName>
+```
+
+### Docker 配置
 
 ```
 $ docker run --name grafana\
@@ -46,5 +54,5 @@ $ grafana-cli --config "/etc/configuration/" admin reset-admin-password mynewpas
 
 ## 參考 
 
-- [grafana-cli-command-syntax](https://grafana.com/docs/grafana/latest/administration/cli/#grafana-cli-command-syntax)
+- [Grafana-cli-command-syntax](https://grafana.com/docs/grafana/latest/administration/cli/#grafana-cli-command-syntax)
 - [Configuration](https://grafana.com/docs/grafana/latest/administration/configuration/)
