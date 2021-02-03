@@ -185,6 +185,7 @@ main() {
                     https://copr.fedorainfracloud.org/coprs/ibotty/prometheus-exporters/repo/epel-7/ibotty-prometheus-exporters-epel-7.repo"
                 $sh_c "yum install -y node_exporter -q > /dev/null 2>&1"
                 $sh_c "systemctl start node_exporter"
+                $sh_c "systemctl enable node_exporter"
             fi
 
             $sh_c "systemctl start node_exporter"
