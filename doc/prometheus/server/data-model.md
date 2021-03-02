@@ -34,7 +34,7 @@
 <metric name>{<label name>=<label value>, ...}
 ```
 
-例如，指標名稱為 `api_http_requests_total`，以及標籤 `method="POST"` 和 `handler="/messages"` 的時間序列可以這樣寫：
+例如，指標名稱是 `api_http_requests_total`，以及標籤為 `method="POST"` 和 `handler="/messages"` 的時間序列可以這樣寫：
 
 ```
 api_http_requests_total{method="POST", handler="/messages"}
