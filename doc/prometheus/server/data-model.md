@@ -12,7 +12,7 @@
 
 ### 標籤
 
-標籤啟用 *Prometheus* 的維度數據模型：相同指標名稱給予任意的標籤組合，都能標示特定多維度實例的指標（如：所有使用 `POST` 方法到 `/api/tracks` 處理程序的 *HTTP* 請求）。查詢語言允許基於這些維度進行篩选和聚合。更改任何標籤值（包括添加或刪除標籤）將創建新的時間序列。
+標籤啟用 *Prometheus* 的多維度數據模型：相同指標名稱給予任意的標籤組合，都能標示指標的特定維度實例（如：所有使用 `POST` 方法到 `/api/tracks` 處理程序的 *HTTP* 請求）。查詢語言允許基於這些維度進行篩选和聚合。更改任何標籤值（包括添加或刪除標籤）將創建新的時間序列。
 
 標籤名稱可以包含 *ASCII* 字母，數字以及下劃線。它們必須匹配正則表達式 `[a-zA-Z_][a-zA-Z0-9_]*` 。以 `__` 開頭的標籤名稱保留供內部使用。
 
@@ -34,7 +34,7 @@
 <metric name>{<label name>=<label value>, ...}
 ```
 
-例如，指標名稱為 `api_http_requests_total`，標籤 `method="POST"`，`handler="/ messages"` 的時間序列可以這樣寫：
+例如，指標名稱為 `api_http_requests_total`，以及標籤 `method="POST"` 和 `handler="/messages"` 的時間序列可以這樣寫：
 
 ```
 api_http_requests_total{method="POST", handler="/messages"}
