@@ -1,7 +1,7 @@
 # Alertmanager
 
 ## Architecture
-<img src="../../img/prometheus/prometheus-04.png" alt="prometheus" height="100%" width="100%">
+<img src="../../../img/prometheus/prometheus-04.png" alt="prometheus" height="100%" width="100%">
 
 ## Table of contents
 - [Installation](./#installation)
