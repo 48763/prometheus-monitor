@@ -11,8 +11,8 @@ services:
       - --web.console.libraries=/usr/share/prometheus/console_libraries
       - --web.console.templates=/usr/share/prometheus/consoles
     volumes:
-      - ./server/prometheus.yml:/etc/prometheus/prometheus.yml:rw
-      - ./server/config/:/etc/prometheus/config/:rw
+      - ./prometheus/server/prometheus.yml:/etc/prometheus/prometheus.yml:rw
+      - ./prometheus/server/config/:/etc/prometheus/config/:rw
       - /data/monitor/prometheus:/prometheus
     restart: always
     logging:
@@ -27,7 +27,7 @@ services:
       - --config.file=/etc/alertmanager/alertmanager.yml
       - --web.external-url=https://localhost:9093
     volumes:
-      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:rw
+      - ./prometheus/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:rw
       - /data/monitor/alertmanager:/alertmanager:rw
     restart: always
     logging:
@@ -44,7 +44,7 @@ services:
         max-size: 1g
     networks:
       - monitor
-    expose:
+    ports:
       - "9091:9091"
 
   grafana:
@@ -54,7 +54,7 @@ services:
     restart: always
     # privileged: true
     networks:
-      - grafana
+      - monitor
     logging:
       options:
         max-size: 1g
