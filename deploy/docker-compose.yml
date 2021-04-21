@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+
+  prometheus:
+    image: prom/prometheus
+    command: 
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=1d
+      - --web.console.libraries=/usr/share/prometheus/console_libraries
+      - --web.console.templates=/usr/share/prometheus/consoles
+    volumes:
+      - ./server/prometheus.yml:/etc/prometheus/prometheus.yml:rw
+      - ./server/config/:/etc/prometheus/config/:rw
+      - /data/monitor/prometheus:/prometheus
+    restart: always
+    logging:
+      options:
+        max-size: 1g
+    networks:
+      - monitor
+
+  alertmanager:
+    image: prom/alertmanager
+    command: 
+      - --config.file=/etc/alertmanager/alertmanager.yml
+      - --web.external-url=https://localhost:9093
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:rw
+      - /data/monitor/alertmanager:/alertmanager:rw
+    restart: always
+    logging:
+      options:
+        max-size: 1g
+    networks:
+      - monitor
+
+  pushgateway:
+    image: prom/pushgateway
+    restart: always
+    logging:
+      options:
+        max-size: 1g
+    networks:
+      - monitor
+    expose:
+      - "9091:9091"
+
+  grafana:
+    image: grafana/grafana
+    # volumes:
+    #   - ./grafana.db:/var/lib/grafana/grafana.db:rw
+    restart: always
+    # privileged: true
+    networks:
+      - grafana
+    logging:
+      options:
+        max-size: 1g
+
+networks:
+  monitor:
+    name: monitor
