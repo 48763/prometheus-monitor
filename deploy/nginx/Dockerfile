@@ -1,4 +1,4 @@
-FROM alpine-nginx:1.12.2
+FROM nginx:stable-alpine
 
 COPY *.txt	/usr/share/nginx/html/
 COPY cert 	/etc/nginx/cert
