@@ -51,7 +51,7 @@ fi
 
 ## monitor
 if [ ! -e /data/monitor ]; then
-    ${sh_c} "mkdir /data/monitor"
+    ${sh_c} "mkdir -p /data/monitor"
 fi
 
 ## prometheus
