@@ -40,7 +40,7 @@ WORKDIR=$(pwd)
 ${sh_c} "docker images" | grep -P 'nginx[[:space:]]*prom' > /dev/null 2>&1
 if [ 1 -eq ${?} ]; then
     cd nginx
-    ${sh_c} "docker build -t . nginx:prom"
+    ${sh_c} "docker build . -t nginx:prom"
     cd ${WORKDIR}
 fi
 
