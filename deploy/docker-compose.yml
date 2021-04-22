@@ -2,6 +2,22 @@ version: '3'
 
 services:
 
+  nginx:
+    image: nginx:prom
+    volumes:
+      - /var/log/nginx:/var/log/nginx
+    restart: always
+    logging:
+      options:
+        max-size: 1g
+    ports:
+      - 80:80
+      - 443:443
+      - 9090:9090
+      - 9093:9093
+    networks:
+      - monitor
+
   prometheus:
     image: prom/prometheus
     command: 
@@ -52,7 +68,6 @@ services:
     # volumes:
     #   - ./grafana.db:/var/lib/grafana/grafana.db:rw
     restart: always
-    # privileged: true
     networks:
       - monitor
     logging:
