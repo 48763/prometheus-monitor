@@ -13,9 +13,9 @@ fi
 sh_c="sh -c"
 ## Set execute command prefix.
 if [ "${user}" != "root" ]; then
-    if CHECK_CMD sudo; then
+    if ${CHECK_CMD} sudo; then
         sh_c="sudo -E sh -c"
-    elif CHECK_CMD su; then
+    elif ${CHECK_CMD} su; then
         sh_c="su -c"
     else
         cat >&2 <<-'EOF'
