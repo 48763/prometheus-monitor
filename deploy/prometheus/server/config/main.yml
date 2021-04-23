@@ -1,8 +1,8 @@
 - targets:
-  - '192.168.0.1:9091'
+  - 'prometheus:9090'
   labels:
     instance: 'monitor.yukifans.com:9091'
-    app: 'pushgateway'
+    app: 'prometheus'
 
 - targets:
   - '192.168.0.1:9100'
