@@ -14,11 +14,11 @@ Cardinality Memory
     120 * unique_labels_num) * 2 / 1024^2
 ```
 
-> `cardinality` = (`ts_num` * 
+> [`cardinality`](#記憶體基數) = ([`ts_num`](#) * 
 >
-> (732 + `avg_labels`(ts) * 32 + `avg_labels`(ts) * `avg_labels_size` * 2)
+> (732 + [`avg_labels`](#時間序的平均標籤)(ts) * 32 + [`avg_labels`](#時間序的平均標籤)(ts) * [`avg_labels_size`](#標籤對的平均字節) * 2)
 >
-> \+ 120 * `unique_labels_num`) * 2 / 1024^2
+> \+ 120 * [`unique_labels_num`](#唯一的標籤對數量)) * 2 / 1024^2
 
 ## 攝取記憶體
 
@@ -69,16 +69,22 @@ ts_num / scrape_interval / 1000
 max_over_time(prometheus_tsdb_head_series[1d])
 ```
 
-#### 時間序的平均標籤（Average Labels Per Time Series）
+#### 時間序的平均標籤
 
+> Average Labels Per Time Series
+>
 > avg_labels(ts)
 
-#### 標籤對的平均字節（Average Bytes per Label Pair）
+#### 標籤對的平均字節
 
+> Average Bytes per Label Pair）
+>
 > avg_labels_size
 
-#### 唯一的標籤對數量（Number of Unique Label Pairs）
+#### 唯一的標籤對數量
 
+> Number of Unique Label Pairs
+>
 > unique_labels_num
 
 ## 記憶體總和（Combined Memory）
