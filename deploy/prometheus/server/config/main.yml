@@ -1,7 +1,7 @@
 - targets:
   - 'prometheus:9090'
   labels:
-    instance: 'monitor.yukifans.com:9091'
+    instance: 'monitor.yukifans.com:9090'
     app: 'prometheus'
 
 - targets:
