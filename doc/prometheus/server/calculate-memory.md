@@ -8,7 +8,7 @@
 total = cardinality + ingest
 ```
 
-## 記憶體基數（Cardinality Memory）
+## 記憶體基數
 
 ```
 cardinality = (
@@ -22,25 +22,25 @@ cardinality = (
 
 ### 時間序的數量
 
+> ts_num
+
 獲取 prometheus 一天內的所有時間序中，一次刮取（scrape）最多指標（metrics）的數量。使用下面所示的 PromQL，以獲取該資訊：
 
 ```
 max_over_time(prometheus_tsdb_head_series[1d])
 ```
 
-> ts_num
-
-### 時間序的平均標籤（Average Labels Per Time Series）
+### 時間序的平均標籤
 
 > avg_labels(ts)
 
 ### 標籤對的平均字節
 
-標籤對的平均字節（Average Bytes per Label Pair）
-
 > avg_labels_size
 
 ### 不重複的標籤對數量
+
+> unique_labels_num
 
 在所有刮取（scrape）的指標（metrics）中，
 
@@ -54,10 +54,8 @@ Postings (unique label pairs): 1217
 Postings entries (total label pairs): 9876
 ```
 
-> unique_labels_num
 
 ## 攝取記憶體
-
 
 ```
 ingest = 
@@ -69,6 +67,8 @@ ingest =
 
 ### 樣本字節數
 
+> sample_byte
+
 計算平均一個樣本所佔的字節數。使用下面所示的 PromQL，以獲取該資訊：
 
 ```
@@ -76,9 +76,9 @@ rate(prometheus_tsdb_compaction_chunk_size_bytes_sum[1d])
 / rate(prometheus_tsdb_compaction_chunk_samples_sum[1d])
 ```
 
-> sample_byte
-
 ### 刮取間隔
+
+> scrape_interval
 
 查看 [`prometheus.yml`][scrape]，就能知道預設的刮取間隔：
 
@@ -87,9 +87,9 @@ global:
   scrape_interval:     15s
 ```
 
-> scrape_interval
-
 ## 每秒樣本數
+
+> sample_num
 
 利用 [`ts_num`](#時間序的數量) 除以 [`scrape_interval`](#刮取間隔)，以獲取平均每秒傳輸（KB/s）的樣本大小：
 
@@ -100,8 +100,6 @@ sample_num(k/s) =
     / 1000
 ```
 
-> sample_num
-
-### 
+### 參考
 
 [scrape]: https://github.com/48763/prometheus-monitor/blob/master/deploy/prometheus/server/prometheus.yml#L3 "prometheus.yml"
