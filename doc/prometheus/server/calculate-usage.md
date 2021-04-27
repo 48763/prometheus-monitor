@@ -107,7 +107,8 @@ Postings entries (total label pairs): 3059
 ```
 ingest = 
     data_rate
-    * 3600 * 3 * 2 / 1024^2
+    * 3600 * 2 # WAL files keep least two hours of raw data.
+    / 1024^2 # Byte to MegaByte.
 ```
 
 ## 硬碟使用量
