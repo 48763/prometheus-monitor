@@ -12,12 +12,13 @@
 
 ```
 data_rate = 
-    ts_num * avg_sample_byte / scrape_interval 
+    ts_num * avg_sample_byte / 0.15
 ```
 
-> 尚未考量未壓縮與瞬間最大值
+> 最大值。  
+> 0.15：
 
-### 時間序的數量
+### 時間序列的數量
 
 > ts_num
 
@@ -111,6 +112,8 @@ ingest =
     / 1024^2 # Byte to MegaByte.
 ```
 
+> Prometheus will retain a minimum of three write-ahead log files.
+
 ## 硬碟使用量
 
 ```
@@ -119,7 +122,7 @@ needed_disk_space =
     * data_rate
 ```
 
-### 參考
+## 參考
 
 [head]: https://prometheus.io/docs/prometheus/latest/storage/ "storage"
 [scrape]: https://github.com/48763/prometheus-monitor/blob/master/deploy/prometheus/server/prometheus.yml#L3 "prometheus.yml"
