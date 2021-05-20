@@ -8,21 +8,21 @@
 
 > data_rate(byte/s)
 
-利用 [`ts_num`](#時間序的數量) 和 [`avg_sample_byte`](#平均樣本字節數) 相乘，再除以 [`scrape_interval`](#刮取間隔)，以獲取平均每秒傳輸量(byte/s)：
+利用 [`ts_num`](#時間序的數量) 和 [`avg_sample_byte`](#平均樣本字節數) 相乘，再除以 `0.15`，以獲取平均每秒傳輸量(byte/s)：
 
 ```
 data_rate = 
     ts_num * avg_sample_byte / 0.15
 ```
 
-> 最大值。  
-> 0.15：
+> 用這公式算出的數值，能較為接近每秒抓取 `metrics` 的最大傳輸流量。  
+> 而 `0.15` 是由壓縮後的檔案，與 `wal` 目錄下，保留兩小時的檔案相比，所得出得數值。
 
 ### 時間序列的數量
 
 > ts_num
 
-獲取 prometheus 在選取的時間範圍內，[`chunks_head`][head] 中的時間序列最大值。使用下面所示的 PromQL，以獲取該資訊：
+獲取 prometheus 在選取的時間範圍內，[`chunks_head`][storage] 中的時間序列最大值。使用下面所示的 PromQL，以獲取該資訊：
 
 ```
 max_over_time(prometheus_tsdb_head_series[1d])
@@ -32,7 +32,7 @@ max_over_time(prometheus_tsdb_head_series[1d])
 
 > avg_byte_per_sample
 
-計算平均一個樣本所佔的字節數。使用下面所示的 PromQL，以獲取該資訊：
+計算壓縮後的樣本，平均每個所佔的字節數。使用下面所示的 PromQL，以獲取該資訊：
 
 ```
 avg_over_time(
@@ -41,13 +41,13 @@ avg_over_time(
     [1d:])
 ```
 
-> 剛建置時，會沒有資訊
+> 如果初始建置的 prometheus，需要放置兩小時後，才會有壓縮的塊（[`chunk`](storage)）。
 
 ### 刮取間隔
 
 > scrape_interval
 
-查看 [`prometheus.yml`][scrape]，就能知道預設的刮取間隔：
+查看 [`prometheus.yml`][scrape]，就能獲取刮取間隔（預設 `1m`）：
 
 ```
 global:
@@ -65,13 +65,15 @@ total = cardinality + ingest
 ### 記憶體基數
 
 ```
-cardinality = (
-    ts_num 
-    * (732
-        + avg_labels(ts) * 32
-        + avg_labels(ts) * avg_labels_size * 2
-        ) + 120 * unique_labels_num
-    ) * 2 / 1024^2
+cardinality = 
+    ( ts_num 
+        * (732
+            + avg_labels(ts) * 32
+            + avg_labels(ts) * avg_labels_size * 2
+            )
+        + 120 * unique_labels_num
+    )
+    * 2 / 1024^2
 ```
 
 #### 時間序的平均標籤
@@ -124,6 +126,8 @@ needed_disk_space =
 
 ## 參考
 
-[head]: https://prometheus.io/docs/prometheus/latest/storage/ "storage"
+- Prometheus, [STORAGE](https://prometheus.io/docs/prometheus/latest/storage/), English
+
+[storage]: https://prometheus.io/docs/prometheus/latest/storage/ "storage"
 [scrape]: https://github.com/48763/prometheus-monitor/blob/master/deploy/prometheus/server/prometheus.yml#L3 "prometheus.yml"
 [releases]: https://github.com/prometheus/prometheus/releases "releases"
