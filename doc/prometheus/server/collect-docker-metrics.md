@@ -1,4 +1,4 @@
-# 收集 Docker 指標
+# Docker 指標
 
 ## 配置 Docker
 
@@ -9,7 +9,7 @@
 ### Linux
 
 ```bash
-$ sudo vi /etc/docker/daemon.json
+$ vi /etc/docker/daemon.json
 {
   "metrics-addr" : "192.168.0.1:9100",
   "experimental" : true
@@ -30,11 +30,12 @@ $ sudo vi /etc/docker/daemon.json
 ### Windows 
 
 檔案路徑：
+
 ```
 C:\ProgramData\docker\config\daemon.json
 ```
 
-## Configure and run Prometheus
+## Prometheus 配置
 
 在 `prometheus.yml` 裡面的 `scrape_configs` 下添加該配置即可。
 
