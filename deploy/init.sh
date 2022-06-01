@@ -1,5 +1,5 @@
 #!/bin/sh
-if [ ! ${#} -eq 0 ] || [ ! ${#} -eq 2 ]; fi
+if [ ! ${#} -eq 0 ] && [ ! ${#} -eq 2 ]; then
     echo "Usage: ${0} [current_domain_name] [replace_domain_name]"
     exit 1
 fi
