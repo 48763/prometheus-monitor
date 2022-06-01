@@ -7,4 +7,4 @@ metrics="$(echo ${ps} \
           printf "node_process_memory_usage{pid=\"%s\", proc=\"%s\"} %s\\n", $1, $4, $3
      }')"
 
-echo -e ${metrics} | curl --data-binary @- "http://localhost/metrics/job/lab/instance/some_instance"
+echo -e ${metrics} | curl --data-binary @- "http://localhost:9091/metrics/job/lab/instance/some_instance"

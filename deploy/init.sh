@@ -1,5 +1,8 @@
 #!/bin/sh
-set -x
+if [ ! ${#} -eq 0 ] || [ ! ${#} -eq 2 ]; fi
+    echo "Usage: ${0} [current_domain_name] [replace_domain_name]"
+    exit 1
+fi
 
 if command -v command > /dev/null 2>&1; then
     CHECK_CMD="command -v"
@@ -37,6 +40,13 @@ fi
 WORKDIR=$(pwd)
 
 ## nginx
+if [ ! -z ${2} ]; then 
+    cd nginx/conf.d
+    ${sh_c} 'sed -i 's/fans.io/chainss.io/g' *.conf'
+    shift 2
+    cd ${WORKDIR}
+fi
+
 ${sh_c} "docker images" | grep -P 'nginx[[:space:]]*prom' > /dev/null 2>&1
 if [ 1 -eq ${?} ]; then
     cd nginx
