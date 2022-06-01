@@ -2,12 +2,12 @@
 
 Prometheus 是一個開源系統監控和警示的工具包。
 
-Prometheus 在 2016 加入 Cloud Native Computing Foundation，成為其第二個託管的專案。
+Prometheus 在 2016 加入 **Cloud Native Computing Foundation**，成為其第二個託管的專案。
 
 ## 目錄
 
 - [架構](#架構)
-- [詞彙解釋](./doc/glossary.md)
+- [詞彙解釋](./glossary.md)
 - [Prometheus](./doc/prometheus)
     - [Server](./doc/prometheus/server)
     - [Alertmanager](./doc/prometheus/alertmanager)
