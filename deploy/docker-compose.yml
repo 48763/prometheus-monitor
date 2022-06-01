@@ -1,7 +1,6 @@
 version: '3'
 
 services:
-
   nginx:
     image: nginx:prom
     volumes:
@@ -17,13 +16,12 @@ services:
       - 9093:9093
     networks:
       - monitor
-
   prometheus:
     image: prom/prometheus
     command: 
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.path=/prometheus
-      - --storage.tsdb.retention.time=1d
+      - --storage.tsdb.retention.time=7d
       - --web.console.libraries=/usr/share/prometheus/console_libraries
       - --web.console.templates=/usr/share/prometheus/consoles
     volumes:
@@ -36,7 +34,6 @@ services:
         max-size: 1g
     networks:
       - monitor
-
   alertmanager:
     image: prom/alertmanager
     command: 
@@ -51,7 +48,6 @@ services:
         max-size: 1g
     networks:
       - monitor
-
   pushgateway:
     image: prom/pushgateway
     restart: always
@@ -62,7 +58,6 @@ services:
       - monitor
     ports:
       - "9091:9091"
-
   grafana:
     image: grafana/grafana
     # volumes:
@@ -73,7 +68,6 @@ services:
     logging:
       options:
         max-size: 1g
-
 networks:
   monitor:
     name: monitor
