@@ -44,6 +44,7 @@ set_target() {
     set_config "  - $(get_json host).gcp.silkrode.com.tw:$1"
     set_config "  labels:"
     set_config "    ip_address_1: $(get_json ip1)"
+    set_config "    cloud : gcp"
 
     if [ "$(get_json ip2)" != "null" ]; then
         set_config "    ip_address_2: $(get_json ip2)"
