@@ -15,7 +15,7 @@ set_job() {
     scrape_interval: $(get_minter)
     metrics_path: $(get_mpath)
     file_sd_configs:
-    - refresh_interval: 30s
+    - refresh_interval: 1m
       files:
       - \"config/gcp/$PROJ/$1.yml\"" >> $CONFIG
 }

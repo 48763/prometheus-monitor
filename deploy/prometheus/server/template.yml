@@ -1,38 +1,31 @@
 # my global config
 global:
-  scrape_interval:     15s # Default is every 1 minute.
-  evaluation_interval: 30s # The default is every 1 minute.
+  scrape_interval:     15s
+  evaluation_interval: 30s
   # scrape_timeout is set to the global default (10s).
 
-# Alertmanager configuration
 alerting:
   alertmanagers:
   - static_configs:
     - targets:
       - alertmanager:9093
 
-# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
 rule_files:
   - "config/rule/*.yml"
 
-# A scrape configuration containing exactly one endpoint to scrape:
-# Here it's Prometheus itself.
 scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
   - job_name: 'main'
-
     file_sd_configs:
-    - refresh_interval: 30s
+    - refresh_interval: 1m
       files:
       - "config/main.yml"
 
   - job_name: pushgateway
-
-    scrape_interval: 2s
+    scrape_interval: 10s
     metrics_path: /metrics
     file_sd_configs:
-    - refresh_interval: 30s
+    - refresh_interval: 1m
       files:
       - "config/pushgateway.yml"
 
-# Script auto generate GCP config.
+# Script auto generate GCP/AWS config.
