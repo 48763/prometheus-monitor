@@ -6,13 +6,27 @@ route:
   group_interval: 1m
   repeat_interval: 1h
   receiver: 'slack.hook'
+  routes:
+    - receiver: "gcp"
+      group_wait: 30s
+      matchers:
+      - cloud=aws
+    - receiver: "aws"
+      group_wait: 30s
+      matchers:
+      - cloud=gcp
 receivers:
-- name: 'slack.hook'
+- name: 'gcp'
   slack_configs: 
-  # Whether or not to notify about resolved alerts.
   - send_resolved: true
-    api_url: http://<TOKEN_URL>
-    # The channel or user to send notifications to.
-    channel: '#alerting'
-    username: 'Grafana'
+    api_url: https://<TOKEN_URL>
+    channel: '#gcp'
+    username: 'Prometheus'
+    text: "<!channel> {{ range.Alerts }}\nsummary: {{ .Annotations.summary }}\ndescription: {{ .Annotations.description }}\n{{ end }}"
+- name: 'aws'
+  slack_configs: 
+  - send_resolved: true
+    api_url: https://<TOKEN_URL>
+    channel: '#aws'
+    username: 'Prometheus'
     text: "<!channel> {{ range.Alerts }}\nsummary: {{ .Annotations.summary }}\ndescription: {{ .Annotations.description }}\n{{ end }}"
