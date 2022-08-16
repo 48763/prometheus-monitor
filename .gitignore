@@ -3,5 +3,5 @@
 *.tmp
 *.key
 *.crt
-!example.crt
-!example.key
+!domain.crt
+!domain.key
