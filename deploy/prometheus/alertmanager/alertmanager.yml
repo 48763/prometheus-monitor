@@ -16,6 +16,13 @@ route:
       matchers:
       - cloud=gcp
 receivers:
+- name: 'slack.hook'
+  slack_configs: 
+  - send_resolved: true
+    api_url: https://<TOKEN_URL>
+    channel: '#common'
+    username: 'Prometheus'
+    text: "<!channel> {{ range.Alerts }}\nsummary: {{ .Annotations.summary }}\ndescription: {{ .Annotations.description }}\n{{ end }}"
 - name: 'gcp'
   slack_configs: 
   - send_resolved: true
