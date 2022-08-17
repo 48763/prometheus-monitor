@@ -25,8 +25,8 @@ services:
       - --web.console.libraries=/usr/share/prometheus/console_libraries
       - --web.console.templates=/usr/share/prometheus/consoles
     volumes:
-      - ./prometheus/server/prometheus.yml:/etc/prometheus/prometheus.yml:rw
-      - ./prometheus/server/config/:/etc/prometheus/config/:rw
+      - ./server/prometheus.yml:/etc/prometheus/prometheus.yml:rw
+      - ./server/config/:/etc/prometheus/config/:rw
       - /data/monitor/prometheus:/prometheus
     restart: always
     logging:
@@ -40,7 +40,7 @@ services:
       - --config.file=/etc/alertmanager/alertmanager.yml
       - --web.external-url=https://localhost:9093
     volumes:
-      - ./prometheus/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:rw
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:rw
       - /data/monitor/alertmanager:/alertmanager:rw
     restart: always
     logging:
@@ -60,8 +60,8 @@ services:
       - "9091:9091"
   grafana:
     image: grafana/grafana
-    # volumes:
-    #   - ./grafana.db:/var/lib/grafana/grafana.db:rw
+    volumes:
+      - ./grafana/grafana.db:/var/lib/grafana/grafana.db:rw
     restart: always
     networks:
       - monitor

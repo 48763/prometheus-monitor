@@ -34,7 +34,7 @@ $ tree
 
 ## 架構
 
-![](img/img-01.png)
+![](images/img-01.png)
 
 Prometheus 服務器（*Server*），可以從 *Pushgateway* 或目標的 *Exporter* 拉取（pull）測量指標；而對於目標本身，只需透過 *exporter* 將指標曝露給外部服務器，或是將指標推送（push）到 *Pushgateway*，使其收集，並讓服務器拉取。
 
