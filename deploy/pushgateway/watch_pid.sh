@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ ! ${#} -eq 4 ]; fi
+if [ ! ${#} -eq 4 ]; fi\\then
     echo "Usage: ${0} [env] [ip_adress] [app_name] [process_unique_keyword]"
     exit 1
 fi
