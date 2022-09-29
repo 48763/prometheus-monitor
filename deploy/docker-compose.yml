@@ -12,8 +12,6 @@ services:
     ports:
       - 80:80
       - 443:443
-      - 9090:9090
-      - 9093:9093
     networks:
       - monitor
   prometheus:
@@ -62,6 +60,16 @@ services:
     image: grafana/grafana
     volumes:
       - ./grafana/grafana.db:/var/lib/grafana/grafana.db:rw
+    restart: always
+    networks:
+      - monitor
+    logging:
+      options:
+        max-size: 1g
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:0.10.0
+    command: 
+        - "-nginx.scrape-uri=http://nginx/metrics"
     restart: always
     networks:
       - monitor
