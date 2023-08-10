@@ -4,6 +4,7 @@ services:
   nginx:
     image: nginx:prom
     volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:rw
       - /var/log/nginx:/var/log/nginx
     restart: always
     logging:
