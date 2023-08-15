@@ -2,9 +2,11 @@ version: '3'
 
 services:
   nginx:
-    image: nginx:prom
+    image: nginx:stable-alpine
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d:rw
+      - ./nginx/cert:/etc/nginx/cert:rw
+      - ./nginx/index.txt:/usr/share/nginx/html/:ro
       - /var/log/nginx:/var/log/nginx
     restart: always
     logging:
