@@ -16,7 +16,7 @@ rule_files:
 scrape_configs:
   - job_name: 'main'
     file_sd_configs:
-    - refresh_interval: 1m
+    - refresh_interval: 5m
       files:
       - "config/main.yml"
 
@@ -24,7 +24,7 @@ scrape_configs:
     scrape_interval: 10s
     metrics_path: /metrics
     file_sd_configs:
-    - refresh_interval: 1m
+    - refresh_interval: 5m
       files:
       - "config/pushgateway.yml"
 
@@ -33,20 +33,36 @@ scrape_configs:
   - job_name: odin-default
     metrics_path: /metrics
     file_sd_configs:
-    - refresh_interval: 1m
+    - refresh_interval: 5m
       files:
       - "config/gcp/odin/default.yml"
 
   - job_name: odin-elasticsearch
     metrics_path: /_prometheus/metrics
     file_sd_configs:
-    - refresh_interval: 1m
+    - refresh_interval: 5m
       files:
       - "config/gcp/odin/elasticsearch.yml"
 
   - job_name: odin-docker
     metrics_path: /metrics
     file_sd_configs:
-    - refresh_interval: 1m
+    - refresh_interval: 5m
       files:
       - "config/gcp/odin/docker.yml"
+
+  - job_name: blackbox
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+    file_sd_configs:
+    - refresh_interval: 10m
+      files:
+      - "config/blackbox.yml"
