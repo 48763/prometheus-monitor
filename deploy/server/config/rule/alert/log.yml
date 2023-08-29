@@ -1,5 +1,5 @@
 groups:
-  - name: Log
+  - name: Applications
     rules:
     - alert: ContainerExited
       expr: engine_daemon_container_states_containers{state="running"} / ignoring(state) sum without(state) (engine_daemon_container_states_containers{app="docker"}) < 1
