@@ -1,4 +1,5 @@
 - targets:
   - https://yayuyo.yt
   labels:
+    module: http_2xx
     app: video
