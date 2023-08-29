@@ -8,10 +8,10 @@ Prometheus 在 2016 加入 **Cloud Native Computing Foundation**，成為其第�
 
 - [架構](#架構)
 - [詞彙解釋](./glossary.md)
-- [Prometheus](./docs/prometheus)
-    - [Server](./docs/prometheus/server)
-    - [Alertmanager](./docs/prometheus/alertmanager)
-    - [Pushgateway](./docs/prometheus/pushgateway)
+- [Prometheus](./docs)
+    - [Server](./docs/server)
+    - [Alertmanager](./docs/alertmanager)
+    - [Pushgateway](./docs/pushgateway)
 - [Exporters](https://github.com/48763/prom-client-ex)
 - [Grafana](./docs/grafana)
 
