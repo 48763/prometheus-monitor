@@ -3,7 +3,7 @@ groups:
     rules:
     - alert: HttpResponseBodyError
       expr: probe_failed_due_to_regex == 1
-      for: 5m
+      for: 10m
       labels:
         severity: domain
       annotations:
@@ -27,9 +27,17 @@ groups:
         description: "{{ $labels.instance }} of job {{ $labels.job }} access latency higher than 1s."
     - alert: HttpResponseCodeError
       expr: 300 >= probe_http_status_code < 200
-      for: 5m
+      for: 10m
       labels:
         severity: domain
       annotations:
         summary: "HTTP({{ $labels.instance }}) response code error."
         description: "{{ $labels.instance }} of job {{ $labels.job }} response code not equal 2xx."
+    - alert: HttpRedirectFail
+      expr: probe_http_redirects{redirect="on"} == 0
+      for: 10m
+      labels:
+        severity: domain
+      annotations:
+        summary: "HTTP({{ $labels.instance }}) redirect fail."
+        description: "{{ $labels.instance }} of job {{ $labels.job }} page not redirect."
