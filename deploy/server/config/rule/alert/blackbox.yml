@@ -10,7 +10,7 @@ groups:
         summary: "HTTP({{ $labels.instance }}) response body error."
         description: "{{ $labels.instance }} of job {{ $labels.job }} body not match regex."
     - alert: CertExpiry
-      expr: ((probe_ssl_last_chain_expiry_timestamp_seconds) - time()) / 86400 < 30
+      expr: ((probe_ssl_last_chain_expiry_timestamp_seconds) - time()) / 86400 < 7
       for: 1h
       labels:
         severity: domain
@@ -18,7 +18,7 @@ groups:
         summary: "Domain's({{ $labels.instance }}) cert is about to expire."
         description: "{{ $labels.instance }} of job {{ $labels.job }} will expire in 30 days."
     - alert: HttpLatancyTooHigh
-      expr: probe_duration_seconds > 1
+      expr: sum without (phase) (probe_http_duration_seconds) > 1
       for: 30m
       labels:
         severity: domain
@@ -26,7 +26,7 @@ groups:
         summary: "HTTP({{ $labels.instance }}) access latency is too high."
         description: "{{ $labels.instance }} of job {{ $labels.job }} access latency higher than 1s."
     - alert: HttpResponseCodeError
-      expr: 300 >= probe_http_status_code < 200
+      expr:  probe_http_status_code > 300 or probe_http_status_code < 200
       for: 10m
       labels:
         severity: domain
