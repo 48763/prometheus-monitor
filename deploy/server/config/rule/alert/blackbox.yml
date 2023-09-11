@@ -16,7 +16,7 @@ groups:
         severity: domain
       annotations:
         summary: "Domain's({{ $labels.instance }}) cert is about to expire."
-        description: "{{ $labels.instance }} of job {{ $labels.job }} will expire in 30 days."
+        description: "{{ $labels.instance }} of job {{ $labels.job }} will expire in {{ printf \"%.0f\" $value }} days."
     - alert: HttpLatancyTooHigh
       expr: sum without (phase) (probe_http_duration_seconds) > 1
       for: 30m
@@ -24,7 +24,7 @@ groups:
         severity: domain
       annotations:
         summary: "HTTP({{ $labels.instance }}) access latency is too high."
-        description: "{{ $labels.instance }} of job {{ $labels.job }} access latency higher than 1s."
+        description: "{{ $labels.instance }} of job {{ $labels.job }} access latency {{ printf \"%.2f\" $value }}s, higher than 1s."
     - alert: HttpResponseCodeError
       expr:  probe_http_status_code > 300 or probe_http_status_code < 200
       for: 10m
