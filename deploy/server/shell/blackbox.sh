@@ -75,7 +75,7 @@ iterate_domains() {
 
 check_config() {
 
-    docker exec -it prometheus promtool check config /etc/prometheus/config/${1} &> /dev/null
+    docker exec prometheus promtool check config /etc/prometheus/config/${1} &> /dev/null
     if [ ${?} -eq 0 ]; then 
         true
     else
