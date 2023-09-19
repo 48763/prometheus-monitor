@@ -2,6 +2,7 @@ version: '3'
 
 services:
   nginx:
+    container_name: nginx
     image: nginx:stable-alpine
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d:rw
@@ -18,6 +19,7 @@ services:
     networks:
       - monitor
   prometheus:
+    container_name: prometheus
     image: prom/prometheus
     command: 
       - --config.file=/etc/prometheus/prometheus.yml
@@ -36,6 +38,7 @@ services:
     networks:
       - monitor
   alertmanager:
+    container_name: alertmanager
     image: prom/alertmanager
     command: 
       - --config.file=/etc/alertmanager/alertmanager.yml
@@ -49,7 +52,8 @@ services:
         max-size: 1g
     networks:
       - monitor
-  pushgateway:
+  pushgateway: 
+    container_name: pushgateway
     image: prom/pushgateway
     restart: always
     logging:
@@ -60,6 +64,7 @@ services:
     ports:
       - "9091:9091"
   grafana:
+    container_name: grafana
     image: grafana/grafana
     volumes:
       - ./grafana/grafana.db:/var/lib/grafana/grafana.db:rw
@@ -70,6 +75,7 @@ services:
       options:
         max-size: 1g
   nginx-exporter:
+    container_name: nginx-exporter
     image: nginx/nginx-prometheus-exporter:0.10.0
     command: 
         - "-nginx.scrape-uri=http://nginx/metrics"
