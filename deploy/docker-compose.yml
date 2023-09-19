@@ -6,7 +6,7 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d:rw
       - ./nginx/cert:/etc/nginx/cert:rw
-      - ./nginx/index.txt:/usr/share/nginx/html/:ro
+      - ./nginx/index.txt:/usr/share/nginx/html/index.txt:ro
       - /var/log/nginx:/var/log/nginx
     restart: always
     logging:
