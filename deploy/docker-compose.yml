@@ -12,7 +12,7 @@ services:
     restart: always
     logging:
       options:
-        max-size: 1g
+        max-size: 100m
     ports:
       - 80:80
       - 443:443
@@ -34,7 +34,7 @@ services:
     restart: always
     logging:
       options:
-        max-size: 1g
+        max-size: 100m
     networks:
       - monitor
   alertmanager:
@@ -49,7 +49,7 @@ services:
     restart: always
     logging:
       options:
-        max-size: 1g
+        max-size: 100m
     networks:
       - monitor
   pushgateway: 
@@ -58,7 +58,7 @@ services:
     restart: always
     logging:
       options:
-        max-size: 1g
+        max-size: 100m
     networks:
       - monitor
     ports:
@@ -73,7 +73,7 @@ services:
       - monitor
     logging:
       options:
-        max-size: 1g
+        max-size: 100m
   nginx-exporter:
     container_name: nginx-exporter
     image: nginx/nginx-prometheus-exporter:0.10.0
@@ -84,7 +84,19 @@ services:
       - monitor
     logging:
       options:
-        max-size: 1g
+        max-size: 100m
+  blackbox_exporter:
+    container_name: blackbox-exporter
+    image: quay.io/prometheus/blackbox-exporter:latest
+    command:
+      - --config.file=/config/blackbox.yml
+    volumes:
+      - ./exporter/blackbox:/config
+    networks:
+      - monitor
+    logging:
+      options:
+        max-size: 100m
 networks:
   monitor:
     name: monitor
