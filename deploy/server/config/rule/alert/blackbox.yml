@@ -32,7 +32,7 @@ groups:
         severity: domain
       annotations:
         summary: "HTTP({{ $labels.instance }}) response code error."
-        description: "{{ $labels.instance }} of job {{ $labels.job }} response code not equal 2xx."
+        description: "{{ $labels.instance }} of job {{ $labels.job }} response code is {{ $value }}."
     - alert: HttpRedirectFail
       expr: probe_http_redirects{redirect="on"} == 0
       for: 10m
