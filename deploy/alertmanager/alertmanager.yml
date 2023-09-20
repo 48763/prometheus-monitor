@@ -5,18 +5,23 @@ route:
   group_wait: 30s
   group_interval: 1m
   repeat_interval: 1h
-  receiver: 'slack.hook'
+  receiver: 'slack'
   routes:
-    - receiver: "gcp"
-      group_wait: 30s
-      matchers:
-      - cloud=aws
-    - receiver: "aws"
-      group_wait: 30s
-      matchers:
-      - cloud=gcp
+  - receiver: 'gcp'
+    group_wait: 30s
+    matchers:
+      cloud: gcp
+    routes:
+    - group_interval: 1d
+      repeat_interval: 1d
+      match:
+        alertname: CertExpiry
+  - receiver: 'aws'
+    group_wait: 30s
+    matchers:
+      cloud: aws
 receivers:
-- name: 'slack.hook'
+- name: 'slack'
   slack_configs: 
   - send_resolved: true
     api_url: https://<TOKEN_URL>
