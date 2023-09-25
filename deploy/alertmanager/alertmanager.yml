@@ -8,7 +8,6 @@ route:
   receiver: 'slack'
   routes:
   - receiver: 'gcp'
-    group_wait: 30s
     matchers:
       cloud: gcp
     routes:
@@ -16,8 +15,9 @@ route:
       repeat_interval: 1d
       match:
         alertname: CertExpiry
+      active_time_intervals:
+      - cert
   - receiver: 'aws'
-    group_wait: 30s
     matchers:
       cloud: aws
 receivers:
@@ -42,3 +42,11 @@ receivers:
     channel: '#aws'
     username: 'Prometheus'
     text: "<!channel> {{ range.Alerts }}\nsummary: {{ .Annotations.summary }}\ndescription: {{ .Annotations.description }}\n{{ end }}"
+
+time_intervals:
+- name: cert
+  time_intervals:
+  - times:
+  # UTC time.
+    - start_time: 02:00
+      end_time: 02:10
