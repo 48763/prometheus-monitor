@@ -1,0 +1,10 @@
+- labels:
+    module: web_http_2xx
+    scheme: https
+    redirect: on
+    filename: prod-homepage.yml
+    env: prod
+    app: homepage
+  targets:
+  - yayuyo.yt
+  - m.yayuyo.yt

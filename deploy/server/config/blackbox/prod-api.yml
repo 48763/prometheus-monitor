@@ -1,0 +1,10 @@
+- labels:
+    module: api_http_2xx
+    scheme: https
+    redirect: off
+    filename: prod-api.yml
+    env: prod
+    app: api
+  targets:
+  - api-1.yayuyo.yt
+  - api-2.yayuyo.yt

@@ -1,7 +1,7 @@
 #!/bin/bash
-pull_script_path="/data/script/tool/domains/using_domian.py"
+pull_script_path="/data/script/tools/pull_domian.py"
 prometheus_confs_path="/opt/prometheus/server/config/blackbox"
-domains_stored_path="/opt/prometheus/server/config/tmp"
+domains_stored_path="/opt/prometheus/server/config/url"
 
 exec_pull_script() {
     cd ${pull_script_path%/*}
@@ -13,24 +13,11 @@ type_map() {
 
     case ${1%-*} in
         # Return 1<module_name> 2<scheme> 3<redirect> 4<test_path>
-        homepage_a)
+        homepage)
             echo "${1#*-}_http_2xx https on"
         ;;
-        share|channel_a|channel_auto|homepage_channel_b|proxy_share_host)
-            echo "${1#*-}_http_2xx https off"
-        ;;
-        apk_share_host|apk_channel_host)
-            echo "apk_http_2xx https off /test"
-            # Test
-        ;;
-        h5_a)
-            echo "h5_http_2xx https on"
-        ;;
-        h5_b|h5_shell)
-            echo "h5_http_2xx https off"
-        ;;
-        api_host|guid_host)
-            echo "api_http_2xx https off"
+        api)
+            echo "api_http_2xx https off /ping"
         ;;
         *)
             echo "http_2xx https off"
@@ -50,7 +37,7 @@ generate() {
     f_echo "    scheme: ${3}"
     f_echo "    redirect: ${4}"
     f_echo "    filename: ${1}.yml"
-    f_echo "    type: ${1%-*}.yml"
+    f_echo "    env: ${1%-*}.yml"
     f_echo "    app: ${1#*-}.yml"
 
     f_echo "  targets:"
