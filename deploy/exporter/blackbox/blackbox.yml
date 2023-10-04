@@ -4,9 +4,20 @@ modules:
     timeout: 5s
     http:
       valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
-      follow_redirects: true
+      follow_redirects: false
       preferred_ip_protocol: "ip4" # defaults to "ip6"
   api_http_2xx:
+    prober: http
+    timeout: 5s
+    http:
+      valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+      follow_redirects: false
+      fail_if_not_ssl: true
+      fail_if_body_not_matches_regexp:
+        - "OK"
+      preferred_ip_protocol: "ip4" # defaults to "ip6"
+      ip_protocol_fallback: false  # no fallback to "ip6"
+  web_http_2xx:
     prober: http
     timeout: 5s
     http:
@@ -14,7 +25,7 @@ modules:
       follow_redirects: true
       fail_if_not_ssl: true
       fail_if_body_not_matches_regexp:
-        - "OK"
+        - "yayuyo"
       preferred_ip_protocol: "ip4" # defaults to "ip6"
       ip_protocol_fallback: false  # no fallback to "ip6"
   http_with_proxy:
