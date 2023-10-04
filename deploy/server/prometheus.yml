@@ -29,43 +29,7 @@ scrape_configs:
       files:
       - "config/pushgateway.yml"
 
-  - job_name: blackbox
-    metrics_path: /probe
-    relabel_configs:
-    - source_labels: [module]
-      target_label: __param_module
-    - source_labels: [scheme, __address__]
-      target_label: __param_target
-      regex: "(.*);(.*)"
-      replacement: $1://$2
-    - source_labels: [__param_target]
-      target_label: instance
-    - target_label: __address__
-      replacement: blackbox_exporter:9115
-    file_sd_configs:
-    - refresh_interval: 10m
-      files:
-      - "config/blackbox.yml"
-
 # Script auto generate GCP/AWS config.
-
-  - job_name: odin-default
-    metrics_path: /metrics
-    file_sd_configs:
-    - refresh_interval: 5m
-      files:
-      - "config/gcp/odin/default.yml"
-
-  - job_name: odin-elasticsearch
-    metrics_path: /_prometheus/metrics
-    file_sd_configs:
-    - refresh_interval: 5m
-      files:
-      - "config/gcp/odin/elasticsearch.yml"
-
-  - job_name: odin-docker
-    metrics_path: /metrics
-    file_sd_configs:
-    - refresh_interval: 5m
-      files:
-      - "config/gcp/odin/docker.yml"
+scrape_config_files:
+  - config/gcp.yml
+  - config/blackbox.yml
