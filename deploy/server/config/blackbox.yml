@@ -20,7 +20,6 @@ scrape_configs:
     files:
     - "blackbox/*.yml"
 
-scrape_configs:
 - job_name: bb-jp
   scrape_interval: 5m
   metrics_path: /probe
@@ -42,7 +41,6 @@ scrape_configs:
     files:
     - "blackbox/*.yml"
 
-scrape_configs:
 - job_name: bb-us
   scrape_interval: 5m
   metrics_path: /probe
