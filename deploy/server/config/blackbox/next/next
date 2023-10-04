@@ -1,0 +1,21 @@
+scrape_configs:
+- job_name: bb-local
+  scrape_interval: 5m
+  metrics_path: /probe
+  relabel_configs:
+  - source_labels: [module]
+    target_label: __param_module
+  - source_labels: [scheme, __address__]
+    target_label: __param_target
+    regex: "(.*);(.*)"
+    replacement: $1://$2
+  - source_labels: [__param_target]
+    target_label: instance
+  - target_label: __address__
+    replacement: blackbox_exporter:9115
+  - source_labels: [instance,__address__,env,app,module]
+    target_label: id
+  file_sd_configs:
+  - refresh_interval: 10m
+    files:
+    - "blackbox/next/*.yml"
