@@ -1,12 +1,12 @@
 #!/bin/sh
 #set -x
-ts=`date "+%Y%m%d%H"`
+ts="$(date "+%Y%m%d%H")"
 PROJ=""
 INFO_JSON=""
 APP=""
 APP_LIST="default elasticsearch docker extension"
-CONFIG="$(pwd)/prometheus.yml"
-WORKPATH="config/gcp"
+CONFIG="/opt/prometheus/server/config/gcp.yml"
+WORKPATH="/opt/prometheus/server/config/gcp"
 
 set_job() {
     
