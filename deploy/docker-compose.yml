@@ -97,6 +97,14 @@ services:
     logging:
       options:
         max-size: 100m
+  whois_exporter:
+    container_name: whois-exporter
+    image: caarlos0/domain_exporter
+    networks:
+      - monitor
+    logging:
+      options:
+        max-size: 100m
 networks:
   monitor:
     name: monitor
