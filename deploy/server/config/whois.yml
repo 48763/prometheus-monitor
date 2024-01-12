@@ -1,6 +1,6 @@
 scrape_configs:
 - job_name: whois
-  scrape_interval: 5m
+  scrape_interval: 1d
   metrics_path: /probe
   relabel_configs:
   - source_labels: [module]
