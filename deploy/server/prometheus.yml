@@ -33,3 +33,4 @@ scrape_configs:
 scrape_config_files:
   - config/gcp.yml
   - config/blackbox.yml
+  - config/whois.yml

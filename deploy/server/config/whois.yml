@@ -1,0 +1,35 @@
+scrape_configs:
+- job_name: whois
+  scrape_interval: 5m
+  metrics_path: /probe
+  relabel_configs:
+  - source_labels: [module]
+    target_label: __param_module
+  - source_labels: [scheme, __address__]
+    target_label: instance
+    regex: "(.*);(.*)"
+    replacement: $1://$2
+  - source_labels: [scheme,__address__]
+    target_label: instance
+    regex: "-;(.*)"
+    replacement: $1
+  - source_labels: [__address__]
+    target_label: __param_target
+    regex: ([\w\d_-]{1,}\.[\w]*)([:\d]{0,})([[:graph:]]{0,})
+    replacement: $1
+  - source_labels: [__address__]
+    target_label: __param_target
+    regex: ([\w\d-_.]{1,}\.)([\w\d_-]{1,}\.[\w]*)([:\d]{0,})([[:graph:]]{0,})
+    replacement: $2
+  - target_label: __address__
+    replacement: blackbox_exporter:9115
+  - source_labels: [instance,__address__,type,app,module]
+    target_label: id
+  - target_label: __address__
+    replacement: whois_exporter:9222
+  - target_label: map
+    replacement: console
+  file_sd_configs:
+  - refresh_interval: 10m
+    files:
+    - "blackbox/*.yml"
