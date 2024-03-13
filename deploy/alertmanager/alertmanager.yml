@@ -9,7 +9,7 @@ route:
   routes:
   - receiver: 'gcp'
     matchers:
-      cloud: gcp
+      - cloud="gcp"
     routes:
     - group_interval: 1d
       repeat_interval: 1d
@@ -19,7 +19,7 @@ route:
       - cert
   - receiver: 'aws'
     matchers:
-      cloud: aws
+      - cloud="aws"
 receivers:
 - name: 'slack'
   slack_configs: 
