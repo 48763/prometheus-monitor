@@ -1,0 +1,15 @@
+scrape_configs:
+  - job_name: default
+    scrape_interval: 10s
+    metrics_path: /metrics
+    azure_sd_configs:
+    - tenant_id: ""
+      client_id: ""
+      client_secret: ""
+      subscription_id: ""
+      port: 9100
+    relabel_configs:
+      - source_labels: [__meta_azure_machine_public_ip]
+        regex: (.+)
+        replacement: ${1}:9100
+        target_label: __address__
