@@ -46,10 +46,12 @@ $ docker run --name azure-exporter \
     # Prometheus metric name
     [ name: ["<String>"] | default = ["azurerm_resource_metric"] ]
 
-    # 
+    # See template format in 
+    # github.com/webdevops/azure-metrics-exporter/tree/main?tab=readme-ov-file#metric-name-and-help-template-system
     [ template: ["<String>"] | default = ["{name}"] ]
 
-    #
+    # See help format in 
+    # github.com/webdevops/azure-metrics-exporter/tree/main?tab=readme-ov-file#metric-name-and-help-template-system
     [ help: ]
 
     # Azure Subscription ID                                                                                                                                
@@ -68,12 +70,16 @@ $ docker run --name azure-exporter \
     [ interval: ["<Timespan>"] ]
 
     # Azure Resource type
+    # See resourceType in 
+    # https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/metrics-index#supported-metrics-and-log-categories-by-resource-type
     resourceType: [ ["<String>"] ]
 
     # Metric namespace
     [ metricNamespace: ]
 
-    # Metric name
+    # Metric name is name in REST API.
+    # See metricname in 
+    # https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/metrics-index#supported-metrics-and-log-categories-by-resource-type
     [ metric:
       [ - Metricname ... ] ]
 
