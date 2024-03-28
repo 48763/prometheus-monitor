@@ -1,0 +1,18 @@
+scrape_configs:
+  - job_name: azure-vm
+    scrape_interval: 1m
+    metrics_path: /probe/metrics
+    params:
+      name: ["azure-vm"]
+      template: ["{name}_{metric}_{aggregation}_{unit}"]
+      subscription:
+      - <Replace_To_Your_Subscription_ID>
+      # See resourceType and metric in 
+      # https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-compute-virtualmachines-metrics
+      resourceType: ["Microsoft.Compute/virtualMachines"]
+      interval: ["PT1M"]
+      timespan: ["PT1M"]
+      metric:
+      - Available Memory Bytes
+    static_configs:
+    - targets: ["AZURE_EXPORTER_METRICS_IP:PORT"]

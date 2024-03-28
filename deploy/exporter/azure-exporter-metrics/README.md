@@ -4,6 +4,8 @@
 
 ## 快速運行
 
+使用下面指令，利用 docker 運行 `azure-metrics-exporter`：
+
 ```
 $ docker run --name azure-exporter \
     --env-files .config \
@@ -47,11 +49,11 @@ $ docker run --name azure-exporter \
     [ name: ["<String>"] | default = ["azurerm_resource_metric"] ]
 
     # See template format in 
-    # github.com/webdevops/azure-metrics-exporter/tree/main?tab=readme-ov-file#metric-name-and-help-template-system
+    # https://github.com/webdevops/azure-metrics-exporter/tree/main?tab=readme-ov-file#metric-name-and-help-template-system
     [ template: ["<String>"] | default = ["{name}"] ]
 
     # See help format in 
-    # github.com/webdevops/azure-metrics-exporter/tree/main?tab=readme-ov-file#metric-name-and-help-template-system
+    # https://github.com/webdevops/azure-metrics-exporter/tree/main?tab=readme-ov-file#metric-name-and-help-template-system
     [ help: ]
 
     # Azure Subscription ID                                                                                                                                
@@ -111,6 +113,4 @@ $ docker run --name azure-exporter \
 
 > 實際細節請查閱[文件](https://github.com/webdevops/azure-metrics-exporter/blob/main/README.md#http-endpoints)
 
-
-
-azure_vm_available_memory_bytes_average_bytes
+> Prometheus 的[配置範例](../../server/config/azure/exporter-metrics.yml)
