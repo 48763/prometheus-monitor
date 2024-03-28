@@ -14,5 +14,33 @@ scrape_configs:
       timespan: ["PT1M"]
       metric:
       - Available Memory Bytes
+      - CPU Credits Consumed
+      - CPU Credits Remaining
+      - Disk Read Bytes
+      - Disk Read Operations/Sec
+      - Disk Write Bytes
+      - Disk Write Operations/Sec
+      - Network In
+      - Network Out
+      - OS Disk Bandwidth Consumed Percentage
+      - OS Disk IOPS Consumed Percentage
+      - OS Disk Latency
+      - OS Disk Queue Depth
+      - OS Disk Read Bytes/sec
+      - OS Disk Read Operations/Sec
+      - OS Disk Write Bytes/sec
+      - OS Disk Write Operations/Sec
+      - Percentage CPU
+      - Temp Disk Latency
+      - Temp Disk Queue Depth
+      - Temp Disk Read Bytes/sec
+      - Temp Disk Read Operations/Sec
+      - Temp Disk Write Bytes/sec
+      - Temp Disk Write Operations/Sec
+      - VM Cached Bandwidth Consumed Percentage
+      - VM Cached IOPS Consumed Percentage
+      - VM Uncached Bandwidth Consumed Percentage
+      - VM Uncached IOPS Consumed Percentage
+      - VmAvailabilityMetric
     static_configs:
     - targets: ["AZURE_EXPORTER_METRICS_IP:PORT"]
