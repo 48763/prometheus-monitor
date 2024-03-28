@@ -43,41 +43,60 @@ $ docker run --name azure-exporter \
   scrape_interval: 1m
   metrics_path: /probe/metrics/resource
   params:
+    # Prometheus metric name
     [ name: ["<String>"] | default = ["azurerm_resource_metric"] ]
 
+    # 
     [ template: ["<String>"] | default = ["{name}"] ]
 
+    #
     [ help: ]
 
     # Azure Subscription ID                                                                                                                                
     subscription:
       [ - <String> ... ]
 
+    # Azure Regions (eg. `westeurope`, `northeurope`). 
+    # If omit, ResourceGrapth will be used to discover regions.
     [ region:
       [ - <String> ... ] ]
 
+    # Metric timespan
     [ timespan: ["<Timespan>"] | default = ["PT1M"] ]
 
+    # Metric timespan
     [ interval: ["<Timespan>"] ]
 
+    # Azure Resource type
     resourceType: [ ["<String>"] ]
 
+    # Metric namespace
     [ metricNamespace: ]
 
+    # Metric name
     [ metric:
       [ - Metricname ... ] ]
 
+    # Metric aggregation (`minimum`, `maximum`, `average`, 
+    #   `total`, `count`, multiple possible separated with `,`)
     [ aggregation:
       [ - Aggregation ... ]  ]
 
+    # Prometheus metric filter (dimension support; 
+    #   supports only 2 filters in subscription query mode 
+    #   as the first filter is used to split by resource id)
     [ metricFilter: ]
 
+    # Prometheus metric dimension count (dimension support)
     [ metricTop: ]
 
+    # Prometheus metric order by (dimension support)
     [ metricOrderBy: ]
 
+    # When set to false, invalid filter parameter values will be ignored.
     [ validateDimensions: ]
 
+    # Use of internal metrics caching.
     [ cache: ]
 
   static_configs:
