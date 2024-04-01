@@ -7,7 +7,7 @@
 使用下面指令，利用 docker 運行 `azure-metrics-exporter`：
 
 ```
-$ docker run --name azure-exporter \
+$ docker run --name azure-metrics-exporter \
     --env-files .config \
     -p 8080:8080 \
     -d 48763/azure-metrics-exporter
