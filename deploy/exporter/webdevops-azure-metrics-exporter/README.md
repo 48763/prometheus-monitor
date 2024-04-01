@@ -1,6 +1,6 @@
-# azure-metrics-exporter
+# webdevops/azure-metrics-exporter
 
-[azure-metrics-exporter](https://github.com/webdevops/azure-metrics-exporter?tab=readme-ov-file#azure-monitor-metrics-exporter)
+[webdevops/azure-metrics-exporter](https://github.com/webdevops/azure-metrics-exporter?tab=readme-ov-file#azure-monitor-metrics-exporter)
 
 ## 快速運行
 
