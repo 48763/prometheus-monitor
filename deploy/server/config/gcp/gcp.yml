@@ -5,7 +5,7 @@ scrape_configs:
     file_sd_configs:
     - refresh_interval: 5m
       files:
-      - "gcp/odin/default.yml"
+      - "odin/default.yml"
 
   - job_name: odin-elasticsearch
     scrape_interval: 150s
@@ -13,7 +13,7 @@ scrape_configs:
     file_sd_configs:
     - refresh_interval: 5m
       files:
-      - "gcp/odin/elasticsearch.yml"
+      - "odin/elasticsearch.yml"
 
   - job_name: odin-docker
     scrape_interval: 10s
@@ -21,4 +21,4 @@ scrape_configs:
     file_sd_configs:
     - refresh_interval: 5m
       files:
-      - "gcp/odin/docker.yml"
+      - "odin/docker.yml"

@@ -5,7 +5,7 @@ PROJ=""
 INFO_JSON=""
 APP=""
 APP_LIST="default elasticsearch docker extension"
-CONFIG="/opt/prometheus/server/config/gcp.yml"
+CONFIG="/opt/prometheus/server/config/gcp/main.yml"
 WORKPATH="/opt/prometheus/server/config/gcp"
 
 set_job() {
