@@ -1,0 +1,15 @@
+credentials:
+  subscription_id: 
+  client_id: 
+  client_secret: 
+  tenant_id: 
+
+resource_groups:
+  - resource_group: ""
+    resource_types:
+      - "Microsoft.Sql/servers/elasticPools"
+    aggregations:
+      - Average
+    metrics:
+      - name: "eDTU_limit"
+      - name: "eDTU_used"
