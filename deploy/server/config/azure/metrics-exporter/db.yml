@@ -1,0 +1,57 @@
+scrape_configs:
+  - job_name: azure-sql-db
+    scrape_interval: 1m
+    scrape_timeout: 1m
+    metrics_path: /probe/metrics/list
+    params:
+      name: ["azure-sql-db"]
+      template: ["{name}_{metric}_{aggregation}_{unit}"]
+      subscription:
+      - <Replace_To_Your_Subscription_ID>
+      # https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-sql-servers-databases-metrics
+      resourceType: ["Microsoft.Sql/servers/databases"]
+      interval: ["PT1M"]
+      timespan: ["PT1M"]
+      metric:
+        - dtu_consumption_percent
+        - log_write_percent
+        - physical_data_read_percent
+        - workers_percent
+        - sessions_percent
+        - cpu_percent
+        - connection_failed
+        - connection_successful
+    static_configs:
+    - targets: ["webdevops-azure-metrics-exporter:8080"]
+
+  - job_name: azure-sql-pool
+    scrape_interval: 1m
+    scrape_timeout: 1m
+    metrics_path: /probe/metrics/list
+    params:
+      name: ["azure-sql-pool"]
+      template: ["{name}_{metric}_{aggregation}_{unit}"]
+      subscription:
+      - <Replace_To_Your_Subscription_ID>
+      # Microsoft.Sql/servers/elasticPoolsMicrosoft.Sql/servers/elasticPools
+      resourceType: ["Microsoft.Sql/servers/elasticPools"]
+      interval: ["PT1M"]
+      timespan: ["PT1M"]
+      metric:
+        - eDTU_limit
+        - eDTU_used
+        - log_write_percent
+        - physical_data_read_percent
+        - workers_percent
+        - sessions_percent
+        - storage_percent
+        - storage_limit
+        - storage_used
+        - allocated_data_storage
+        - sqlserver_process_core_percent
+        - sqlserver_process_memory_percent
+        - tempdb_data_size
+        - tempdb_log_size
+        - tempdb_log_used_percent
+    static_configs:
+    - targets: ["webdevops-azure-metrics-exporter:8080"]

@@ -32,6 +32,7 @@ scrape_configs:
 # Script auto generate GCP/AWS config.
 scrape_config_files:
   - config/azure/*.yml
+  - config/azure/metrics-exporter/*.yml
   - config/gcp/main.yml
   - config/blackbox.yml
   - config/whois.yml
