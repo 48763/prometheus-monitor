@@ -43,4 +43,4 @@ scrape_configs:
       - VM Uncached IOPS Consumed Percentage
       - VmAvailabilityMetric
     static_configs:
-    - targets: ["AZURE_EXPORTER_METRICS_IP:PORT"]
+    - targets: ["webdevops-azure-metrics-exporter:PORT"]
