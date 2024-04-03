@@ -21,6 +21,13 @@ scrape_configs:
         - cpu_percent
         - connection_failed
         - connection_successful
+    metric_relabel_configs:
+    - source_labels: [resourceID]
+      target_label: servers
+      regex: ".*servers/([[:alnum:]-_]*)/.*"
+    - source_labels: [resourceID]
+      target_label: databases
+      regex: ".*databases/(.*)"
     static_configs:
     - targets: ["webdevops-azure-metrics-exporter:8080"]
 
@@ -53,5 +60,12 @@ scrape_configs:
         - tempdb_data_size
         - tempdb_log_size
         - tempdb_log_used_percent
+    metric_relabel_configs:
+    - source_labels: [resourceID]
+      target_label: servers
+      regex: ".*servers/([[:alnum:]-_]*)/.*"
+    - source_labels: [resourceID]
+      target_label: elasticpools
+      regex: ".*elasticpools/(.*)"
     static_configs:
     - targets: ["webdevops-azure-metrics-exporter:8080"]
