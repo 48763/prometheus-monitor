@@ -8,8 +8,7 @@
 
 ```
 $ docker run --name azure-metrics-exporter \
-    -v $(pwd)/.config.yml:/monitor-prometheus/.config.yml \
+    -v $(pwd)/azure.yml:/azure.yml \
     -p 9276:9276 \
     -d robustperception/azure_metrics_exporter \
-      --config.file=/monitor-prometheus/.config.yml
 ```
