@@ -5,6 +5,7 @@
 - [Prometheus `azure_sd_config`](#prometheus-azure_sd_config)
 - [webdevops/azure-metrics-exporter](#webdevopsazure-metrics-exporter)
 - [RobustPerception/azure_metrics_exporter](#robustperceptionazure_metrics_exporter)
+- [vladvasiliu/azure-app-secrets-monitor](#vladvasiliuazure-app-secrets-monitor)
 - [Grafana plugin](#grafana-plugin)
 - [Grafana agent](#grafana-agent)
 
@@ -19,7 +20,11 @@ Prometheus 原生自帶的服務探索，但僅限於有安裝 `node-exporter` �
 
 ### RobustPerception/azure_metrics_exporter
 
-已多年未更新的第三方專案，尚未研究測試。
+已多年未更新的第三方專案，尚未研究測試，功能與 [webdevops/azure-metrics-exporter](#webdevopsazure-metrics-exporter) 類似。
+
+### vladvasiliu/azure-app-secrets-monitor
+
+已多年未更新的第三方專案，尚未研究測試，功能是監測金鑰時效。
 
 ### Grafana plugin
 
