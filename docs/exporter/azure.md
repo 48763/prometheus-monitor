@@ -6,6 +6,7 @@
 - [webdevops/azure-metrics-exporter](#webdevopsazure-metrics-exporter)
 - [RobustPerception/azure_metrics_exporter](#robustperceptionazure_metrics_exporter)
 - [vladvasiliu/azure-app-secrets-monitor](#vladvasiliuazure-app-secrets-monitor)
+- [opensourceelectrolux/azure-cost-exporter](#opensourceelectroluxazure-cost-exporter)
 - [Grafana plugin](#grafana-plugin)
 - [Grafana agent](#grafana-agent)
 
@@ -25,6 +26,10 @@ Prometheus 原生自帶的服務探索，但僅限於有安裝 `node-exporter` �
 ### vladvasiliu/azure-app-secrets-monitor
 
 已多年未更新的第三方專案，尚未研究測試，功能是監測金鑰時效。
+
+### opensourceelectrolux/azure-cost-exporter
+
+有持續在更新的第三方專案，尚未研究測試，功能是計算雲端成本。
 
 ### Grafana plugin
 
