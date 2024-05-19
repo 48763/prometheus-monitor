@@ -190,6 +190,7 @@ get_plans_info_json() {
 
 gen_plan_metrics() {
     json=${1}
+    metrics=""
 
     metrics="azure_web_serverfarms_info{
         resourceGroup=\"$(get_json_val resourcegroup)\", 
@@ -215,7 +216,7 @@ gen_plan_metrics() {
         env=\"$(get_json_val tags.env)\"
         } $(get_json_val numberofsites)\n"
 
-    echo -e ${metrics}
+    echo ${metrics}
 
 }
 
@@ -255,7 +256,7 @@ gen_site_metrics() {
         env=\"$(get_json_val tags.env)\"
         } 1\n"
 
-    echo -e ${metrics}
+    echo ${metrics}
 
 }
 
@@ -263,6 +264,7 @@ main() {
     init
 
     subscriptions=$(get_subscriptions_json)
+    metrics=""
 
     while read subscription; 
     do
@@ -276,12 +278,11 @@ main() {
 
         for i in $(seq 0 $(( ${count} - 1 )) );
         do
-            plan=$(echo ${plans} | jq -r .data.[${i}])
+            plan=$(echo ${plans} | jq -r .data.[${i}]) ##
             # name=$(echo ${plan} | jq -r .)
-            echo "Plan ${i}: $name"
+            # echo "Plan ${i}: $name"
 
-            gen_plan_metrics "${plan}"
-            
+            metrics="${metrics}"$(gen_plan_metrics "${plan}")
         done
 
         sites=$(get_sites_info_json "${subscription}")
@@ -293,12 +294,12 @@ main() {
         do
             site=$(echo ${sites} | jq -r .data.[${i}])
             # name=$(echo ${site} | jq -r .)
-            echo "site ${i}: $name"
+            # echo "site ${i}: $name"
 
-            gen_site_metrics "${site}"
+            metrics=${metrics}$(gen_site_metrics "${site}")
         done
 
-        echo ""
+        echo -e "${metrics}" | sort
         break
 
     done < <(echo ${subscriptions} | jq -r .[].id)
