@@ -190,7 +190,6 @@ get_plans_info_json() {
 
 gen_plan_metrics() {
     json=${1}
-    metrics=""
 
     metrics="azure_web_serverfarms_info{
         resourceGroup=\"$(get_json_val resourcegroup)\", 
@@ -268,14 +267,12 @@ main() {
 
     while read subscription; 
     do
-
         echo "- ${subscription}: "
-
+        
         plans=$(get_plans_info_json "${subscription}")
         # jq -r ".data.[] | .name, .subscriptionId, .sku.name, .kind, .tags, .numberOfSites, .status")
 
         count=$(echo ${plans} | jq -r .count)
-
         for i in $(seq 0 $(( ${count} - 1 )) );
         do
             plan=$(echo ${plans} | jq -r .data.[${i}]) ##
@@ -289,7 +286,6 @@ main() {
         # jq -r ".data.[] | .name, .subscriptionId, .appServicePlan, .kind, .tags"
 
         count=$(echo ${sites} | jq -r .count)
-
         for i in $(seq 0 $(( ${count} - 1 )) );
         do
             site=$(echo ${sites} | jq -r .data.[${i}])
@@ -298,11 +294,13 @@ main() {
 
             metrics=${metrics}$(gen_site_metrics "${site}")
         done
-
+    
         echo -e "${metrics}" | sort
-        break
+        echo ""
 
     done < <(echo ${subscriptions} | jq -r .[].id)
+
+    echo -e "${metrics}" | sort
 }
 
 if [ -e "/tmp/${0##*/}" ]; then
