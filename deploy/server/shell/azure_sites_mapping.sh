@@ -164,7 +164,8 @@ get_plans_info_json() {
         | where type == 'microsoft.web/serverfarms'
         | where subscriptionId == '$1'
         | project name, subscriptionId, resourceGroup, sku, kind, tags
-            , numberOfSites=properties.numberOfSites, status=properties.status"
+            , numberOfSites=properties.numberOfSites, status=properties.status" \
+    | tr '[:upper:]' '[:lower:]'
 }
 
 # {
@@ -191,31 +192,44 @@ gen_plan_metrics() {
     json=${1}
 
     metrics="azure_web_serverfarms_info{
-        resourceGroup=\"$(get_json_val resourceGroup)\", 
+        resourceGroup=\"$(get_json_val resourcegroup)\", 
         resourceName=\"$(get_json_val name)\",
-        subscriptionName=\"$(get_json_val subscriptionId)\", 
+        subscriptionID=\"$(get_json_val subscriptionid)\", 
         product=\"$(get_json_val tags.product)\",
         env=\"$(get_json_val tags.env)\"
         } 1\n"
 
     metrics="${metrics}azure_web_serverfarms_node_number{
-        resourceGroup=\"$(get_json_val resourceGroup)\", 
+        resourceGroup=\"$(get_json_val resourcegroup)\", 
         resourceName=\"$(get_json_val name)\",
-        subscriptionName=\"$(get_json_val subscriptionId)\", 
+        subscriptionID=\"$(get_json_val subscriptionid)\", 
         product=\"$(get_json_val tags.product)\",
         env=\"$(get_json_val tags.env)\"
         } $(get_json_val sku.capacity)\n"
     
     metrics="${metrics}azure_web_serverfarms_app_number{
-        resourceGroup=\"$(get_json_val resourceGroup)\", 
+        resourceGroup=\"$(get_json_val resourcegroup)\", 
         resourceName=\"$(get_json_val name)\",
-        subscriptionName=\"$(get_json_val subscriptionId)\", 
+        subscriptionID=\"$(get_json_val subscriptionid)\", 
         product=\"$(get_json_val tags.product)\",
         env=\"$(get_json_val tags.env)\"
-        } $(get_json_val numberOfSites)\n"
+        } $(get_json_val numberofsites)\n"
 
     echo -e ${metrics}
 
+}
+
+# (subscription) return json
+get_sites_info_json() {
+    az graph query --first 100 \
+    --graph-query \
+    "resources 
+        | where type == 'microsoft.web/sites'
+        | where subscriptionId == '$1'
+        | extend appServicePlan 
+            = extract('serverfarms/([^/]+)', 1, tostring(properties.serverFarmId)) 
+        | project name, resourceGroup, subscriptionId, appServicePlan, kind, tags"  \
+    | tr '[:upper:]' '[:lower:]'
 }
 
 #  {
@@ -233,28 +247,16 @@ gen_site_metrics() {
     json=${1}
 
     metrics="azure_web_sites_app_state{
-        resourceGroup=\"$(get_json_val resourceGroup)\", 
+        resourceGroup=\"$(get_json_val resourcegroup)\", 
         resourceName=\"$(get_json_val name)\",
-        subscriptionName=\"$(get_json_val subscriptionId)\", 
-        subjection=\"$(get_json_val appServicePlan)\", 
+        subscriptionID=\"$(get_json_val subscriptionid)\", 
+        subjection=\"$(get_json_val appserviceplan)\", 
         product=\"$(get_json_val tags.product)\",
         env=\"$(get_json_val tags.env)\"
         } 1\n"
 
     echo -e ${metrics}
 
-}
-
-# (subscription) return json
-get_sites_info_json() {
-    az graph query --first 100 \
-    --graph-query \
-    "resources 
-        | where type == 'microsoft.web/sites'
-        | where subscriptionId == '$1'
-        | extend appServicePlan 
-            = extract('serverfarms/([^/]+)', 1, tostring(properties.serverFarmId)) 
-        | project name, subscriptionId, appServicePlan, kind, tags"
 }
 
 main() {
@@ -279,6 +281,7 @@ main() {
             echo "Plan ${i}: $name"
 
             gen_plan_metrics "${plan}"
+            
         done
 
         sites=$(get_sites_info_json "${subscription}")
