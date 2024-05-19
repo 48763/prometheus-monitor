@@ -24,11 +24,11 @@ init() {
 }
 
 get_json_val() {
-    jq -r ".$@"
+    echo -e "${json}" | jq -r ".$@" 2> /dev/null
 }
 
 set_json_val() {
-    jq ".$@"
+    echo ${json} | jq ".$@"
 }
 
 # (sku_name) return json
@@ -163,8 +163,86 @@ get_plans_info_json() {
     "resources
         | where type == 'microsoft.web/serverfarms'
         | where subscriptionId == '$1'
-        | project name, subscriptionId, sku, kind, tags
+        | project name, subscriptionId, resourceGroup, sku, kind, tags
             , numberOfSites=properties.numberOfSites, status=properties.status"
+}
+
+# {
+#   "kind": "",
+#   "name": "",
+#   "numberOfSites": 0,
+#   "sku": {
+#     "capacity": 0,
+#     "family": "",
+#     "name": "",
+#     "size": "",
+#     "tier": "",
+#   },
+#   "status": "",
+#   "subscriptionId": "",
+#   "tags": {
+#     "createat": "",
+#     "createby": "",
+#     "product": ""
+#   }
+# }
+
+gen_plan_metrics() {
+    json=${1}
+
+    metrics="azure_web_serverfarms_info{
+        resourceGroup=\"$(get_json_val resourceGroup)\", 
+        resourceName=\"$(get_json_val name)\",
+        subscriptionName=\"$(get_json_val subscriptionId)\", 
+        product=\"$(get_json_val tags.product)\",
+        env=\"$(get_json_val tags.env)\"
+        } 1\n"
+
+    metrics="${metrics}azure_web_serverfarms_node_number{
+        resourceGroup=\"$(get_json_val resourceGroup)\", 
+        resourceName=\"$(get_json_val name)\",
+        subscriptionName=\"$(get_json_val subscriptionId)\", 
+        product=\"$(get_json_val tags.product)\",
+        env=\"$(get_json_val tags.env)\"
+        } $(get_json_val sku.capacity)\n"
+    
+    metrics="${metrics}azure_web_serverfarms_app_number{
+        resourceGroup=\"$(get_json_val resourceGroup)\", 
+        resourceName=\"$(get_json_val name)\",
+        subscriptionName=\"$(get_json_val subscriptionId)\", 
+        product=\"$(get_json_val tags.product)\",
+        env=\"$(get_json_val tags.env)\"
+        } $(get_json_val numberOfSites)\n"
+
+    echo -e ${metrics}
+
+}
+
+#  {
+#   "appServicePlan": "",
+#   "kind": "",
+#   "name": "",
+#   "subscriptionId": "",
+#   "tags": {
+#     "product": ""
+#   }
+# }
+
+gen_site_metrics() {
+
+    json=${1}
+
+    metrics="azure_web_sites_app_state{
+        resourceGroup=\"$(get_json_val resourceGroup)\", 
+        resourceName=\"$(get_json_val name)\",
+        subscriptionName=\"$(get_json_val subscriptionId)\", 
+        subjection=\"$(get_json_val appServicePlan)\", 
+        product=\"$(get_json_val tags.product)\",
+        env=\"$(get_json_val tags.env)\"
+        } 1\n"
+
+    echo -e ${metrics}
+
 }
 
 # (subscription) return json
@@ -197,8 +275,10 @@ main() {
         for i in $(seq 0 $(( ${count} - 1 )) );
         do
             plan=$(echo ${plans} | jq -r .data.[${i}])
-            name=$(echo ${plan} | jq -r .name)
+            # name=$(echo ${plan} | jq -r .)
             echo "Plan ${i}: $name"
+
+            gen_plan_metrics "${plan}"
         done
 
         sites=$(get_sites_info_json "${subscription}")
@@ -209,11 +289,14 @@ main() {
         for i in $(seq 0 $(( ${count} - 1 )) );
         do
             site=$(echo ${sites} | jq -r .data.[${i}])
-            name=$(echo ${site} | jq -r .name)
+            # name=$(echo ${site} | jq -r .)
             echo "site ${i}: $name"
+
+            gen_site_metrics "${site}"
         done
 
         echo ""
+        break
 
     done < <(echo ${subscriptions} | jq -r .[].id)
 }
