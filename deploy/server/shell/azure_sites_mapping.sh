@@ -1,17 +1,18 @@
 #/bin/bash
 init() {
+    if [ -e "config" ]; then
+        source config
+    fi
+    
     check=$(get_subscriptions_json)
     
     if [ "[]" = "${check}" ]; then
 
-        if [ -e "secret" ]; then
-            source secret
-        fi
 
         az login --service-principal \
         -t ${AZURE_TENANT_ID} \
         -u ${AZURE_CLIENT_ID} \
-        -p ${AZURE_CLIENT_SECRET} 2> /dev/null
+        -p ${AZURE_CLIENT_SECRET} &> /dev/null
 
         if [ $? -ne 0 ]; then
             echo "Failed to login"
@@ -20,135 +21,164 @@ init() {
 
     fi
 
-    az extension add --name resource-graph &> /dev/null
+    az extension list | jq -r .[].name | grep resource-graph &> /dev/null
+    if [ 0 -ne ${?} ]; then
+        az extension add --name resource-graph &> /dev/null
+    fi
 }
 
+# (key) return value
 get_json_val() {
     echo -e "${json}" | jq -r ".$@" 2> /dev/null
 }
 
+# (key, value)
 set_json_val() {
-    echo ${json} | jq ".$@"
+
+    json=$(echo ${json} | jq ".${1} |= \"${2}\"" )
 }
 
-# (sku_name) return json
-set_app_service_plan() {
-    # ${1} = sku.name
+# (plan.sku_name)
+set_server_plan() {
 
     case ${1} in
-        B1,S1)
+        b1|s1)
             core=1
             memory=1.75
         ;;
-        B2,S2)
+        b2|s2)
             core=2
             memory=3.50
         ;;
-        B3,S3)
+        b3|s3)
             core=4
             memory=7.00
         ;;
-        P0v3)
+        p0v3)
             core=1
             memory=4
         ;;
-        P1v3)
+        p1v3)
             core=2
             memory=8
         ;;
-        P1mv3)
+        p1mv3)
             core=2
             memory=16
         ;;
-        P2v3)
+        p2v3)
             core=4
             memory=16
         ;;
-        P2mv3)
+        p2mv3)
             core=4
             memory=32
         ;;
-        P3v3)
+        p3v3)
             core=8
             memory=32
         ;;
-        P3mv3)
+        p3mv3)
             core=8
             memory=64
         ;;
-        P4mv3)
+        p4mv3)
             core=16
             memory=128
         ;;
-        P5mv3)
+        p5mv3)
             core=32
             memory=256
         ;;
-        P1v2)
+        p1v2)
             core=1
             memory=3.50
         ;;
-        P2v2)
+        p2v2)
             core=2
             memory=7.00
         ;;
-        P3v2)
+        p3v2)
             core=4
             memory=14.00
         ;;
-        I1v2)
+        i1v2)
             core=2
             memory=8.00
         ;;
-        I1mv2)
+        i1mv2)
             core=2
             memory=16.00
         ;;
-        I2v2)
+        i2v2)
             core=4
             memory=16.00
         ;;
-        I2mv2)
+        i2mv2)
             core=4
             memory=32.00
         ;;
-        I3v2)
+        i3v2)
             core=8
             memory=32.00
         ;;
-        I3mv2)
+        i3mv2)
             core=8
             memory=64.00
         ;;
-        I4v2)
+        i4v2)
             core=16
             memory=64.00
         ;;
-        I4mv2)
+        i4mv2)
             core=16
             memory=128.00
         ;;
-        I5v2)
+        i5v2)
             core=32
             memory=128.00
         ;;
-        I5mv2)
+        i5mv2)
             core=32
             memory=256.00
         ;;
-        I6v2)
+        i6v2)
             core=64
             memory=256.00
         ;;
-        Y1,D1)
-            core=0
-            memory=0
+        y1|d1)
+            core=1
+            memory=1
         ;;
         *)
             core=-1
             memory=-1
         ;;
     esac
+
+    set_json_val memory ${memory}
+    set_json_val cpu ${core}
+}
+
+# (app.kind)
+set_app_type() {
+
+    case ${1} in
+        app)
+            type="app"
+        ;;
+        app,linux,container)
+            type="container"
+        ;;
+        functionapp,linux)
+            type="function"
+        ;;
+        *)
+            type="unknown"
+        ;;
+    esac
+
+    set_json_val type ${type}
 }
 
 # () return json
@@ -162,42 +192,35 @@ get_plans_info_json() {
     --graph-query \
     "resources
         | where type == 'microsoft.web/serverfarms'
-        | where subscriptionId == '$1'
+        | where subscriptionId == '${1}'
         | project name, subscriptionId, resourceGroup, sku, kind, tags
             , numberOfSites=properties.numberOfSites, status=properties.status" \
     | tr '[:upper:]' '[:lower:]'
 }
 
-# {
-#   "kind": "",
-#   "name": "",
-#   "numberOfSites": 0,
-#   "sku": {
-#     "capacity": 0,
-#     "family": "",
-#     "name": "",
-#     "size": "",
-#     "tier": "",
-#   },
-#   "status": "",
-#   "subscriptionId": "",
-#   "tags": {
-#     "createat": "",
-#     "createby": "",
-#     "product": ""
-#   }
-# }
-
+# () return json
 gen_plan_metrics() {
-    json=${1}
 
-    metrics="azure_web_serverfarms_info{
-        resourceGroup=\"$(get_json_val resourcegroup)\", 
-        resourceName=\"$(get_json_val name)\",
-        subscriptionID=\"$(get_json_val subscriptionid)\", 
-        product=\"$(get_json_val tags.product)\",
-        env=\"$(get_json_val tags.env)\"
-        } 1\n"
+    # {
+    #   "kind": "",
+    #   "name": "",
+    #   "numberOfSites": 0,
+    #   "sku": {
+    #     "capacity": 0,
+    #     "family": "",
+    #     "name": "",
+    #     "size": "",
+    #     "tier": "",
+    #   },
+    #   "status": "",
+    #   "subscriptionId": "",
+    #   "tags": {
+    #     "createat": "",
+    #     "createby": "",
+    #     "product": ""
+    #   }
+    # }
+    metrics=""
 
     metrics="${metrics}azure_web_serverfarms_node_number{
         resourceGroup=\"$(get_json_val resourcegroup)\", 
@@ -206,6 +229,22 @@ gen_plan_metrics() {
         product=\"$(get_json_val tags.product)\",
         env=\"$(get_json_val tags.env)\"
         } $(get_json_val sku.capacity)\n"
+
+    metrics="${metrics}azure_web_serverfarms_cpu_cores{
+        resourceGroup=\"$(get_json_val resourcegroup)\", 
+        resourceName=\"$(get_json_val name)\",
+        subscriptionID=\"$(get_json_val subscriptionid)\", 
+        product=\"$(get_json_val tags.product)\",
+        env=\"$(get_json_val tags.env)\"
+        } $(get_json_val cpu)\n"
+
+    metrics="${metrics}azure_web_serverfarms_memory_total_gigabyte{
+        resourceGroup=\"$(get_json_val resourcegroup)\", 
+        resourceName=\"$(get_json_val name)\",
+        subscriptionID=\"$(get_json_val subscriptionid)\", 
+        product=\"$(get_json_val tags.product)\",
+        env=\"$(get_json_val tags.env)\"
+        } $(get_json_val memory)\n"
     
     metrics="${metrics}azure_web_serverfarms_app_number{
         resourceGroup=\"$(get_json_val resourcegroup)\", 
@@ -225,26 +264,25 @@ get_sites_info_json() {
     --graph-query \
     "resources 
         | where type == 'microsoft.web/sites'
-        | where subscriptionId == '$1'
+        | where subscriptionId == '${1}'
         | extend appServicePlan 
             = extract('serverfarms/([^/]+)', 1, tostring(properties.serverFarmId)) 
         | project name, resourceGroup, subscriptionId, appServicePlan, kind, tags"  \
     | tr '[:upper:]' '[:lower:]'
 }
 
-#  {
-#   "appServicePlan": "",
-#   "kind": "",
-#   "name": "",
-#   "subscriptionId": "",
-#   "tags": {
-#     "product": ""
-#   }
-# }
-
+# () return json
 gen_site_metrics() {
 
-    json=${1}
+    #  {
+    #   "appServicePlan": "",
+    #   "kind": "",
+    #   "name": "",
+    #   "subscriptionId": "",
+    #   "tags": {
+    #     "product": ""
+    #   }
+    # }
 
     metrics="azure_web_sites_app_state{
         resourceGroup=\"$(get_json_val resourcegroup)\", 
@@ -252,55 +290,59 @@ gen_site_metrics() {
         subscriptionID=\"$(get_json_val subscriptionid)\", 
         subjection=\"$(get_json_val appserviceplan)\", 
         product=\"$(get_json_val tags.product)\",
-        env=\"$(get_json_val tags.env)\"
+        env=\"$(get_json_val tags.env)\",
+        type=\"$(get_json_val type)\"
         } 1\n"
 
     echo ${metrics}
 
 }
 
+post_metrics() {
+    curl -fsSL -X POST -H "Host: push.test.com" --data-binary @log "http://4.190.9.45/metrics/job/azure-web-monitor-patch"
+}
+
+delete_metrics() {
+    curl -fsSL -X DELETE -H "Host: push.test.com" "http://4.190.9.45/metrics/job/azure-web-monitor-patch"
+}
+
 main() {
     init
+    subscriptions=$([ "${SUBSCRIBES}" ] && echo "${SUBSCRIBES}" || get_subscriptions_json | jq -r ".[].id")
 
-    subscriptions=$(get_subscriptions_json)
-    metrics=""
-
-    while read subscription; 
+    for subscription in ${subscriptions};
     do
-        echo "- ${subscription}: "
-        
+        metrics=""
+
         plans=$(get_plans_info_json "${subscription}")
-        # jq -r ".data.[] | .name, .subscriptionId, .sku.name, .kind, .tags, .numberOfSites, .status")
 
         count=$(echo ${plans} | jq -r .count)
         for i in $(seq 0 $(( ${count} - 1 )) );
         do
-            plan=$(echo ${plans} | jq -r .data.[${i}]) ##
-            # name=$(echo ${plan} | jq -r .)
-            # echo "Plan ${i}: $name"
 
-            metrics="${metrics}"$(gen_plan_metrics "${plan}")
+            json=$(echo ${plans} | jq -r .data.[${i}])
+
+            set_server_plan $(get_json_val sku.name)
+
+            metrics=${metrics}$(gen_plan_metrics) 
         done
 
         sites=$(get_sites_info_json "${subscription}")
-        # jq -r ".data.[] | .name, .subscriptionId, .appServicePlan, .kind, .tags"
 
         count=$(echo ${sites} | jq -r .count)
         for i in $(seq 0 $(( ${count} - 1 )) );
         do
-            site=$(echo ${sites} | jq -r .data.[${i}])
-            # name=$(echo ${site} | jq -r .)
-            # echo "site ${i}: $name"
+
+            json=$(echo ${sites} | jq -r .data.[${i}])
+
+            set_app_type $(get_json_val kind)
 
             metrics=${metrics}$(gen_site_metrics "${site}")
+
         done
-    
-        echo -e "${metrics}" | sort
-        echo ""
 
-    done < <(echo ${subscriptions} | jq -r .[].id)
-
-    echo -e "${metrics}" | sort
+        echo -e "${metrics}" | sort | tail +2
+    done
 }
 
 if [ -e "/tmp/${0##*/}" ]; then
@@ -319,6 +361,8 @@ echo $$ > /tmp/${0##*/}
 case ${1} in 
     gen)
         main
+        delete_metrics
+        post_metrics
     ;;
     *)
         $@
