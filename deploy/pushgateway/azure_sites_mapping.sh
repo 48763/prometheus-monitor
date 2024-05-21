@@ -299,7 +299,7 @@ gen_site_metrics() {
 }
 
 post_metrics() {
-    curl -fsSL -X POST -H "Host: push.test.com" --data-binary @log "http://4.190.9.45/metrics/job/azure-web-monitor-patch"
+    curl -fsSL -X POST -H "Host: push.test.com" --data-binary @metrics.log "http://4.190.9.45/metrics/job/azure-web-monitor-patch"
 }
 
 delete_metrics() {
@@ -308,6 +308,7 @@ delete_metrics() {
 
 main() {
     init
+    :> metrics.log
     subscriptions=$([ "${SUBSCRIBES}" ] && echo "${SUBSCRIBES}" || get_subscriptions_json | jq -r ".[].id")
 
     for subscription in ${subscriptions};
@@ -341,7 +342,7 @@ main() {
 
         done
 
-        echo -e "${metrics}" | sort | tail +2
+        echo -e "${metrics}" | sort | tail +2 >> metrics.log
     done
 }
 
