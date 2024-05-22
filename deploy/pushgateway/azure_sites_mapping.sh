@@ -226,6 +226,7 @@ gen_plan_metrics() {
         resourceGroup=\"$(get_json_val resourcegroup)\", 
         resourceName=\"$(get_json_val name)\",
         subscriptionID=\"$(get_json_val subscriptionid)\", 
+        plan=\"$(get_json_val sku.name)\", 
         product=\"$(get_json_val tags.product)\",
         env=\"$(get_json_val tags.env)\"
         } $(get_json_val sku.capacity)\n"
@@ -234,6 +235,7 @@ gen_plan_metrics() {
         resourceGroup=\"$(get_json_val resourcegroup)\", 
         resourceName=\"$(get_json_val name)\",
         subscriptionID=\"$(get_json_val subscriptionid)\", 
+        plan=\"$(get_json_val sku.name)\", 
         product=\"$(get_json_val tags.product)\",
         env=\"$(get_json_val tags.env)\"
         } $(get_json_val cpu)\n"
