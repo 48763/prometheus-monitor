@@ -225,8 +225,8 @@ gen_plan_metrics() {
     metrics="${metrics}azure_web_serverfarms_node_number{
         resourceGroup=\"$(get_json_val resourcegroup)\", 
         resourceName=\"$(get_json_val name)\",
+        farm=\"$(get_json_val name)\", 
         subscriptionID=\"$(get_json_val subscriptionid)\", 
-        plan=\"$(get_json_val sku.name)\", 
         product=\"$(get_json_val tags.product)\",
         env=\"$(get_json_val tags.env)\"
         } $(get_json_val sku.capacity)\n"
@@ -234,6 +234,7 @@ gen_plan_metrics() {
     metrics="${metrics}azure_web_serverfarms_cpu_cores{
         resourceGroup=\"$(get_json_val resourcegroup)\", 
         resourceName=\"$(get_json_val name)\",
+        farm=\"$(get_json_val name)\", 
         subscriptionID=\"$(get_json_val subscriptionid)\", 
         plan=\"$(get_json_val sku.name)\", 
         product=\"$(get_json_val tags.product)\",
@@ -243,7 +244,9 @@ gen_plan_metrics() {
     metrics="${metrics}azure_web_serverfarms_memory_total_gigabyte{
         resourceGroup=\"$(get_json_val resourcegroup)\", 
         resourceName=\"$(get_json_val name)\",
+        farm=\"$(get_json_val name)\", 
         subscriptionID=\"$(get_json_val subscriptionid)\", 
+        plan=\"$(get_json_val sku.name)\", 
         product=\"$(get_json_val tags.product)\",
         env=\"$(get_json_val tags.env)\"
         } $(get_json_val memory)\n"
@@ -251,6 +254,7 @@ gen_plan_metrics() {
     metrics="${metrics}azure_web_serverfarms_app_number{
         resourceGroup=\"$(get_json_val resourcegroup)\", 
         resourceName=\"$(get_json_val name)\",
+        farm=\"$(get_json_val name)\", 
         subscriptionID=\"$(get_json_val subscriptionid)\", 
         product=\"$(get_json_val tags.product)\",
         env=\"$(get_json_val tags.env)\"
@@ -290,7 +294,7 @@ gen_site_metrics() {
         resourceGroup=\"$(get_json_val resourcegroup)\", 
         resourceName=\"$(get_json_val name)\",
         subscriptionID=\"$(get_json_val subscriptionid)\", 
-        subjection=\"$(get_json_val appserviceplan)\", 
+        farm=\"$(get_json_val appserviceplan)\", 
         product=\"$(get_json_val tags.product)\",
         env=\"$(get_json_val tags.env)\",
         type=\"$(get_json_val type)\"
