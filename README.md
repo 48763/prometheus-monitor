@@ -51,11 +51,11 @@ Prometheus 服務器（*Server*）（圖的中間），它可以從 *Pushgateway
 
 想要觀看拉取的儲存測量指標數據時，有下面兩種方式（圖的右下）：
 
-- 利用 Prometheus 原生介面，以 PromQL（Prometheus Query Language）查詢想要的資訊，系統也會呈現簡易的數據圖表
+- 利用 Prometheus 服務器（*Server*）的原生介面，以 PromQL（Prometheus Query Language）查詢想要的資訊，系統也會呈現簡易的數據圖表
 - 或是使用 *Grafana*，將 prometheus 作為資料來源加入，就可以任意製作儀表板呈現，以方便觀測目標主機的狀態
 
 ### 告警
 
-最後，服務器上可以設置告警條件，只要使用 PromQL 查詢想要的指標或聚合的數據，再使用簡易的條件式（`>`, `<`, `=`, `!=`）設置閥值，例如：`up != 1`，當條件符合時，系統將會推送告警至指定的 *Altermanager*（圖的右上）。
+最後，服務器（*Server*）上可以設置告警條件，只要使用 PromQL 查詢想要的指標或聚合的數據，再使用簡易的條件式（`>`, `<`, `=`, `!=`）設置閥值，例如：`up != 1`，當條件符合時，系統將會推送告警至指定的 *Altermanager*（圖的右上）。
 
 Altermanager 收到告警後，會按照設置的 `route` 發送告警訊息至指定的 `receiver`（有通訊軟體或 webhook，如： slack），使相關的負責人員能收到告警訊息，以進行後續處理。
