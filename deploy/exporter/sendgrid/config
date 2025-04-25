@@ -1,0 +1,4 @@
+PUSHGATEWAY="https://192.168.0.1"
+HOST="push.doamin.com"
+AC_LIST="TEST"
+TEST="THIS_IS_A_TOKEN"
